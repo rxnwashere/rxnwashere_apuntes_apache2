@@ -114,5 +114,9 @@ sudo systemctl restart networking
 Ahora sí podremos instalar Apache:
 
 ```bash
-sudo apt install apache2
+sudo apt install apache2 -y
 ```
+
+Ahora si accedemos a la ip del servidor desde el navegador veremos la página por defecto de Apache, indicando que se ha instalado correctamente:
+
+![Página por defecto de Apache](imgs/01.png)
