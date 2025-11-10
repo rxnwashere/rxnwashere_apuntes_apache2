@@ -161,4 +161,26 @@ Listen 8080
 </IfModule>
 ```
 
-Ahora escuchará por los puertos **80** y **8080** para **HTTP** y **443** y **8443** para **HTTPS** cuando el **módulo SSL esté activo**.
+Recargamos la configuración de Apache:
+
+```bash
+sudo systemctl reload apache2
+```
+
+Ahora escuchará por los puertos **80** y **8080** para **HTTP** y **443** y **8443** para **HTTPS** cuando el **módulo SSL esté activo**, podemos ver esto claro con el comando <code>ss -punta</code>:
+
+```bash
+web@ubuntu-web-server:~$ ss -punta
+Netid State  Recv-Q Send-Q          Local Address:Port             Peer Address:Port                                   Process                                  
+udp   UNCONN 0      0                  127.0.0.54:53                    0.0.0.0:*                                                                               
+udp   UNCONN 0      0               127.0.0.53%lo:53                    0.0.0.0:*                                                                               
+tcp   LISTEN 0      4096               127.0.0.54:53                    0.0.0.0:*                                                                               
+tcp   LISTEN 0      4096                  0.0.0.0:22                    0.0.0.0:*                                                                               
+tcp   LISTEN 0      4096            127.0.0.53%lo:53                    0.0.0.0:*                                                                               
+tcp   LISTEN 0      511                         *:8080                        *:*                                                                               
+tcp   LISTEN 0      4096                     [::]:22                       [::]:*                                                                               
+tcp   LISTEN 0      511                         *:80                          *:*                                                                               
+tcp   ESTAB  0      0      [::ffff:192.168.1.130]:22     [::ffff:192.168.1.135]:43576   
+```
+
+Como el módulo SSL no está activo solo veremos los puertos que escucha HTTP, que son el 80 y el 8080 como hemos configurado anteriormente.
