@@ -501,6 +501,72 @@ El alert del navegador seguirá apareciendo hasta que se introduzcan credenciale
 
 #### Acceso restringido por grupos
 
+Con los usuarios creados podemos crear grupos y restringir el acceso a los usuarios que no pertenezcan a un grupo especifico.
+
+Para ello habilitaremos el módulo <code>authz_groupfile</code> y crearemos un archivo con los grupos y los usuarios que pertenecen a estos:
+
+```bash
+web@ubuntu-web-server:/var/www/aaron$ sudo a2enmod authz_groupfile 
+[sudo] password for web: 
+Considering dependency authz_core for authz_groupfile:
+Module authz_core already enabled
+Enabling module authz_groupfile.
+To activate the new configuration, you need to run:
+  systemctl restart apache2
+web@ubuntu-web-server:/var/www/aaron$ sudo touch group
+web@ubuntu-web-server:/var/www/aaron$ sudo nano group
+web@ubuntu-web-server:/var/www/aaron$ cat group
+autorizados: Aaron
+no: Matilda
+web@ubuntu-web-server:/var/www/aaron$ sudo systemctl restart apache2
+```
+
+Ahora modificamos la configuración:
+
+```bash
+<VirtualHost *:80>
+        ServerName aaron.local
+        ServerAlias www.aaron.local
+
+        DocumentRoot /var/www/aaron
+
+        <Directory /var/www/aaron/lib>
+                Options -Indexes
+        </Directory>
+
+        <Directory /var/www/aaron/zona-restringida>
+                AuthType Basic
+                AuthName "Zona restringida con usuario y contraseña"
+                AuthBasicProvider file
+                AuthUserFile /var/www/aaron/secret
+                AuthGroupFile /var/www/aaron/group
+                Require group autorizados
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/aaron-error.log
+        CustomLog ${APACHE_LOG_DIR}/aaron-access.log combined
+</VirtualHost>
+```
+
+**Cambios**:
+
+- Se ha añadido la directiva <code>AuthGroupFile</code> para indicar la ubiación del archivo que contiene los grupos y sus miembros.
+- Se ha reemplazado <code>Require valid-user</code> por <code>Require group autorizados</code>, indicando que ahora solo se aceptarán usuarios válido **y que pertenezcan al grupo o grupos indicados**.
+
+Recargamos la configuración y probamos el login.
+
+**Login correcto**:
+
+![Probando con usuario Aaron perteneciente a grupo autorizados. Este usuario podrá acceder.](imgs/13.png)
+
+![Login correcto](imgs/14.png)
+
+**Login incorrecto**:
+
+![Probando con usuario Matilda perteneciente a grupo no. No podrá acceder.](imgs/15.png)
+
+![Login incorrecto](imgs/16.png)
+
 ### Allow y Deny
 
 ### Página de error personalizada.
