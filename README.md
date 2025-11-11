@@ -361,6 +361,7 @@ ff02::2 ip6-allrouters
 Ahora si intentamos acceder al sitio desde los nombres especificados y sus puertos veremos que funciona correctamente:
 
 **aaron.local y www.aaron.local**:
+
 ![Prueba del sitio que funciona por el puerto 80](imgs/02.png)
 
 ![Prueba del sitio que funciona por el puerto 80](imgs/03.png)
@@ -370,3 +371,11 @@ Ahora si intentamos acceder al sitio desde los nombres especificados y sus puert
 ![Prueba del sitio que funciona por el puerto 8080](imgs/04.png)
 
 ![Prueba del sitio que funciona por el puerto 8080](imgs/05.png)
+
+Si intenamos acceder al index de lib del puerto 80 y 8080 deberia pasar lo siguiente:
+
+- Puerto 80: <code>403 Forbidden</code>
+![403 Forbidden al intentar acceder al index de aaron.local/lib. Esto es porque en la etiqueta Directory especificamos Options -Indexes.](imgs/06.png)
+
+- Puerto 8080: Listará el contenido del directorio.
+![Accede al index porque especificamos Options +Indexes](imgs/07.png)
