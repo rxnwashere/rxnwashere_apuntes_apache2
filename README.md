@@ -16,6 +16,10 @@ HTTP --> Puerto 80
 HTTPS --> Puerto 443
 ```
 
+### Usuario
+
+Apache2 utiliza el usuario <code>www-data</code>.
+
 ## Instalación
 
 Para la instalación de Apache2 es recomendable que nuestro servidor disponga de una **IP fija**, podemos configurarla desde el archivo **Netplan**:
@@ -184,3 +188,185 @@ tcp   ESTAB  0      0      [::ffff:192.168.1.130]:22     [::ffff:192.168.1.135]:
 ```
 
 Como el módulo SSL no está activo solo veremos los puertos que escucha HTTP, que son el 80 y el 8080 como hemos configurado anteriormente.
+
+Si activamos el módulo SSL y recargamos la configuración veremos los puertos configurados para el módulo:
+
+```bash
+web@ubuntu-web-server:~$ sudo a2enmod ssl
+[sudo] password for web: 
+Considering dependency mime for ssl:
+Module mime already enabled
+Considering dependency socache_shmcb for ssl:
+Enabling module socache_shmcb.
+Enabling module ssl.
+See /usr/share/doc/apache2/README.Debian.gz on how to configure SSL and create self-signed certificates.
+To activate the new configuration, you need to run:
+  systemctl restart apache2
+web@ubuntu-web-server:~$ sudo systemctl reload apache2
+web@ubuntu-web-server:~$ ss -punta
+Netid State   Recv-Q  Send-Q   Local Address:Port    Peer Address:Port  Process 
+udp   UNCONN  0       0           127.0.0.54:53           0.0.0.0:*             
+udp   UNCONN  0       0        127.0.0.53%lo:53           0.0.0.0:*             
+tcp   LISTEN  0       4096           0.0.0.0:22           0.0.0.0:*             
+tcp   LISTEN  0       4096        127.0.0.54:53           0.0.0.0:*             
+tcp   LISTEN  0       4096     127.0.0.53%lo:53           0.0.0.0:*             
+tcp   ESTAB   0       0        192.168.1.130:22     192.168.1.135:33486         
+tcp   LISTEN  0       511                  *:80                 *:*             
+tcp   LISTEN  0       4096              [::]:22              [::]:*             
+tcp   LISTEN  0       511                  *:8443               *:*             
+tcp   LISTEN  0       511                  *:443                *:*             
+tcp   LISTEN  0       511                  *:8080               *:*  
+```
+
+Ahora ya aparecen los puertos seguros para HTTPS.
+
+### Configuración inicial del sitio
+
+**Directorios importantes:**
+
+- <code>/etc/apache2/sites-enabled</code>
+
+- <code>/etc/apache2/sites-available</code>
+
+En <code>sites-available</code> crearemos las configuraciones con sus respectivos **VirtualHost**, cuando activemos las configuraciones se crearan enlaces simbolicos en <code>sites-enabled</code>.
+
+Primero desactivaremos la configuración por defecto y crearemos una nueva:
+
+```bash
+sudo a2disstie 000-default.conf
+sudo nano /etc/apache2/sites-available/aaron.conf
+```
+
+```bash
+<VirtualHost *:80>
+        ServerName aaron.local    
+        ServerAlias www.aaron.local
+
+        DocumentRoot /var/www/aaron
+
+        <Directory /var/www/aaron/lib>
+                Options -Indexes
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/aaron-error.log
+        CustomLog ${APACHE_LOG_DIR}/aaron-access.log combined
+</VirtualHost>
+
+<VirtualHost *:8080>
+        ServerName aaron2.local
+        ServerAlias www.aaron2.local
+
+        DocumentRoot /var/www/aaron2
+
+        <Directory /var/www/aaron2/lib>
+                Options +Indexes
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/aaron2-error.log
+        CustomLog ${APACHE_LOG_DIR}/aaron2-access.log combined
+</VirtualHost>
+
+<IfModule mod_ssl.c>
+        <VirtualHost *:443>
+
+        </VirtualHost>
+
+        <VirtualHost *:8443>
+
+        </VirtualHost>
+</IfModule>
+```
+
+De momento no utilizaremos los <code>VirtualHost</code> para HTTPS, centremonos en los HTTP puerto 80 y 8080.
+
+<code>*</code> --> Cualquier IP. Podemos poner una especifica si es necesario.
+
+<code>80/8080</code> --> Puerto por el que se accede
+
+<code>ServerName</code> --> Nombre con el cual se puede acceder al sitio en lugar de la IP.
+
+<code>ServerAlias</code> --> Nombre alternativo con el cual podemos acceder al servidor.
+
+<code>DocumentRoot</code> --> Ubicación donde se sirven los archivos HTML de la página.
+
+<code>Directory</code> --> Directivas que afectan al directorio especificado en la etiqueta.
+
+<code>Options +/- Indexes</code> --> Sirve par activar o desactivar el listado del contenido del directorio en caso de que no se encuentre un archivo <zcode>index.html</code>
+
+<code>ErroLog y CustomLog</code> --> Logs del sitio. Es recomendable tener logs independientes por cada VirtualHost.
+
+Ahora creamos los directorios y archivos, habilitamos la configuración y recargamos la configuración:
+
+```bash
+web@ubuntu-web-server:/etc/apache2$ sudo mkdir -p /var/www/aaron/lib
+web@ubuntu-web-server:/etc/apache2$ sudo mkdir -p /var/www/aaron2/lib
+web@ubuntu-web-server:/etc/apache2$ ls -la /var/www/
+total 20
+drwxr-xr-x  5 root root 4096 nov 11 13:59 .
+drwxr-xr-x 14 root root 4096 nov 10 09:57 ..
+drwxr-xr-x  3 root root 4096 nov 11 13:58 aaron
+drwxr-xr-x  3 root root 4096 nov 11 13:59 aaron2
+drwxr-xr-x  2 root root 4096 nov 10 09:57 html
+web@ubuntu-web-server:/etc/apache2$ sudo nano /var/www/aaron/index.html 
+# Aqui creamos los archivos e introducimos el contenido
+web@ubuntu-web-server:/etc/apache2$ sudo nano /var/www/aaron2/index.html
+web@ubuntu-web-server:/etc/apache2$ cat /var/www/aaron/index.html 
+<h1>Bienvenido a mi web por el puerto 80</h1>
+web@ubuntu-web-server:/etc/apache2$ cat /var/www/aaron2/index.html 
+<h1>Bienvenido a mi web por el puerto 8080</h1>
+web@ubuntu-web-server:/etc/apache2$ sudo a2ensite aaron.conf 
+Enabling site aaron.
+To activate the new configuration, you need to run:
+  systemctl reload apache2
+web@ubuntu-web-server:/etc/apache2$ sudo systemctl reload apache2
+```
+
+### Archivo /etc/hosts
+
+Como no disponemos de servidor DNS ni tenemos nuestro sitio en un hosting externo utilizaremos el archivo /etc/hosts en nuestra máquina y en el servidor para reconocer <code>ServerName</code> y <code>ServerAlias</code>.
+
+```bash
+sudo nano /etc/hosts
+```
+
+**Cliente**:
+
+```bash
+# See `man hosts` for details.
+#
+# By default, systemd-resolved or libnss-myhostname will resolve
+# localhost and the system hostname if they're not specified here.
+127.0.0.1       localhost
+::1             localhost
+192.168.1.135   pop-os
+192.168.1.130   aaron.local     aaron2.local    www.aaron.local         www.aaron2.local
+```
+
+**Servidor**:
+
+```bash
+127.0.0.1 localhost
+127.0.1.1 ubuntu-web-server
+127.0.1.1       aaron.local     aaron2.local    www.aaron.local         www.aaron2.local
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+```
+
+### Prueba de configuración inicial
+
+Ahora si intentamos acceder al sitio desde los nombres especificados y sus puertos veremos que funciona correctamente:
+
+**aaron.local y www.aaron.local**:
+![Prueba del sitio que funciona por el puerto 80](imgs/02.png)
+
+![Prueba del sitio que funciona por el puerto 80](imgs/03.png)
+
+**aaron2.local:8080 y www.aaron2.local:8080**:
+
+![Prueba del sitio que funciona por el puerto 8080](imgs/04.png)
+
+![Prueba del sitio que funciona por el puerto 8080](imgs/05.png)
