@@ -397,3 +397,100 @@ body {
 Sin recargar la configuración, si ahora accedemos a la página del puerto 80 veremos que los estilos se han aplicado sin problemas:
 
 ![Estilos aplicados aún teniendo restricción de listar el directorio](imgs/08.png)
+
+### Configurar acceso restringido
+
+Es posible configurar restricciones en nuestro servidor web a diferentes niveles como por ejemplo, por usuarios, grupos o direcciones IP...
+
+#### Acceso restringido por usuarios
+
+Usando la etiqueta <code>Directory</code> en la configuración de nuestro sitio y el comando <code>htpasswd</code> podemos crear una restricción por usuarios, cuando se intente acceder al sitio restringido se pedirá un usuario y contraseña:
+
+```bash
+web@ubuntu-web-server:/var/www/aaron$ sudo htpasswd -c secret Aaron
+New password: 
+Re-type new password: 
+Adding password for user Aaron
+web@ubuntu-web-server:/var/www/aaron$ sudo htpasswd secret Matilda
+New password: 
+Re-type new password: 
+Adding password for user Matilda
+web@ubuntu-web-server:/var/www/aaron$ cat secret 
+Aaron:$apr1$zcorPY/y$6mvrMl2EDURj0OiYDQ34f1
+Matilda:$apr1$PQYCNAzl$v7O/NY9euvWBC5aoNuqjV.
+```
+
+Creamos el archivo <code>secret</code> (puedes ponerle cualquier nombre) usando el parámetro <code>-c</code> del comando <code>htpasswd</code>, es importante introducir un usuario en la creación, si no se hace no se creará el archivo.
+
+```bash
+sudo htpasswd -c <nombre-archivo> <usuario>
+```
+
+Para sobreescribir el archivo y añadir un nuevo usuario repetimos el proceso **sin el parámetro <code>-c</code>**.
+
+```bash
+sudo htpasswd <nombre-archivo> <usuario>
+```
+
+Los usuarios se guardaran con los nombres asignados y con las contraseñas hasheadas.
+
+Ahora crearemos un sitio de prueba dentro de aaron.local (Puerto 80) para probar esta restricción:
+
+```bash
+web@ubuntu-web-server:/var/www/aaron$ sudo mkdir zona-restringida
+web@ubuntu-web-server:/var/www/aaron$ sudo nano zona-restringida/index.html
+web@ubuntu-web-server:/var/www/aaron$ cat zona-restringida/index.html 
+<h1>Te damos la bienvenida a la zona restringida</h1>
+```
+
+Editamos la configuración:
+
+```bash
+<VirtualHost *:80>
+        ServerName aaron.local
+        ServerAlias www.aaron.local
+
+        DocumentRoot /var/www/aaron
+
+        <Directory /var/www/aaron/lib>
+                Options -Indexes
+        </Directory>
+
+        <Directory /var/www/aaron/zona-restringida>
+                AuthType Basic
+                AuthName "Zona restringida con usuario y contraseña"
+                AuthBasicProvider file
+                AuthUserFile /var/www/aaron/secret
+                Require valid-user
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/aaron-error.log
+        CustomLog ${APACHE_LOG_DIR}/aaron-access.log combined
+</VirtualHost>
+```
+
+Recargamos la configuración y probamos acceder a la zona restringida:
+
+**Login correcto**:
+
+![Alert para introducir credenciales. Si no las introducimos tendremos un error 401 Unauthorized](imgs/09.png)
+
+![Login correcto. Nos permite ver el contenido de la página](imgs/10.png)
+
+**Login incorrecto**:
+
+Probaremos con un usuario inexistente, pero no aceptará tampoco si se falla la contraseña de un usuario existente en el alert:
+
+![Usuario inventado para login incorrecto.](imgs/11.png)
+
+![Error 401](imgs/12.png)
+
+El alert del navegador seguirá apareciendo hasta que se introduzcan credenciales válidos, si cancelamos saltará **Error 401 Unauthorized**.
+
+#### Acceso restringido por grupos
+
+### Allow y Deny
+
+### Página de error personalizada.
+
+### Securizar el sitio (Activar SSL)
