@@ -20,6 +20,18 @@ HTTPS --> Puerto 443
 
 Apache2 utiliza el usuario <code>www-data</code>.
 
+## Conexión remota con el servidor
+
+Para trabajar de forma más comoda con nuestro servidor podemos usar ssh para conectarnos desde nuestro terminal de forma remota al servidor:
+
+```bash
+ssh web@192.168.1.130
+```
+
+<code>ssh &lt;usuario&gt;@&lt;IP-Servidor&gt; </code>
+
+Nos pedirá añadir el fingerprint y la contraseña del usuario remoto.
+
 ## Instalación
 
 Para la instalación de Apache2 es recomendable que nuestro servidor disponga de una **IP fija**, podemos configurarla desde el archivo **Netplan**:
