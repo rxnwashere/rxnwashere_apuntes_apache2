@@ -379,3 +379,21 @@ Si intenamos acceder al index de lib del puerto 80 y 8080 deberia pasar lo sigui
 
 - Puerto 8080: Listará el contenido del directorio.
 ![Accede al index porque especificamos Options +Indexes](imgs/07.png)
+
+Esta restricción **solo afecta al listado del directorio por parte del cliente**, no afecta en los recursos que pueda utilizar la página. Por ejemplo, si añadimos una hoja de estilos CSS en aaron.local/lib siempre y cuando el documento HTML tenga la etiqueta link apuntando hacia el archivo CSS adoptará los estilos.
+
+```css
+body { 
+        background-color: black;
+        color: white;
+}
+```
+
+```html
+<link rel="stylesheet" href="lib/styles.css">
+<h1>Bienvenido a mi web por el puerto 80</h1>
+```
+
+Sin recargar la configuración, si ahora accedemos a la página del puerto 80 veremos que los estilos se han aplicado sin problemas:
+
+![Estilos aplicados aún teniendo restricción de listar el directorio](imgs/08.png)
