@@ -1,0 +1,26 @@
+body {
+    display: flex;
+    font-family: sans-serif;
+}
+
+img {
+    flex: 1;
+    width: 35em;
+}
+
+.msg {
+    flex: 1;
+    padding-left: 5%;
+}
+
+.code {
+    flex: 1;
+    color: rgb(209, 209, 64);
+    font-size: 20em;
+}
+
+.doh {
+    flex: 1;
+    color:blueviolet;
+    font-size: 20em;
+}

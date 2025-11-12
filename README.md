@@ -714,4 +714,96 @@ También funciona con la etiqueta <code>&lt;FilesMatch&gt;</code>:
 
 ### Página de error personalizada.
 
+Para esta sección utilizaremos de ejemplo la página de error creada en el directorio 404 de este repositorio, ahora mismo la tenemos en nuestro equipo:
+
+![Página de error 404 personalizada en local. No implementada aún en el sitio.](imgs/20.png)
+
+Lo primero será pasar los archvios al servidor utilizando el comando <code>scp</code>:
+
+```bash
+rxn@pop-os:~/Code/rxnwashere_apuntes_apache2$ scp 404/* web@192.168.1.130:/home/web
+web@192.168.1.130's password: 
+404.jpg                                                             100%   52KB  44.0MB/s   00:00    
+index.html                                                          100%  425     1.4MB/s   00:00    
+styles.css                                                          100%  281   880.5KB/s   00:00 
+```
+
+Lo hacemos en la home del usuario del servidor ya que es un directorio con permisos para subir archvios por scp, algunos directorios nos pueden denegar el permiso de subida.
+
+Ahora movemos los archivos al sitio donde queremos que esté la página de error y modificamos la configuración:
+
+```bash
+web@ubuntu-web-server:~$ ls
+404.jpg  index.html  styles.css
+web@ubuntu-web-server:~$ sudo mkdir -p /var/www/aaron2/error
+[sudo] password for web: 
+web@ubuntu-web-server:~$ sudo mv * /var/www/aaron2/error/
+web@ubuntu-web-server:~$ ls /var/www/aaron2/error
+404.jpg  index.html  styles.css
+```
+
+```apache
+<VirtualHost *:8080>
+    ServerName aaron2.local
+    ServerAlias www.aaron2.local
+
+    DocumentRoot /var/www/aaron2
+
+    ErrorDocument 404 /error/index.html
+
+    ErrorLog ${APACHE_LOG_DIR}/aaron2-error.log
+    CustomLog ${APACHE_LOG_DIR}/aaron2-access.log combined
+</VirtualHost>
+```
+
+Con la directiva <code>ErrorDocument</code> asignamos un error personalizado al código 404. La ruta del documento de error es relativa a <code>DocumentRoot</code>.
+
+Como la ruta es relativa, esto afecta al documento HTML, por lo que todos los enlaces deben tener esta ruta, si no los estilos o las imagenes pueden no cargar correctamente:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - NOT FOUND</title>
+    <link rel="stylesheet" href="/error/styles.css">
+</head>
+<body>
+
+    <figure>
+        <img src="/error/404.jpg">
+    </figure>
+
+    <div class="msg">
+        <span class="code">404</span>
+        <span class="doh">D'OH!</span>
+    </div>
+    
+</body>
+</html>
+```
+
+Recargamos la configuración y probamos nuestra página de error intentando acceder a un sitio inexistente en nuestra web:
+
+![Página de error personalizada](imgs/21.png)
+
+#### Otras formas de personalizar el error
+
+**Mediante texto**:
+
+```apache
+ErrorDocument 404 "404 D'OH!"
+```
+
+**Redirección**:
+
+```apache
+ErrorDocument 404 https://google.es/
+```
+
 ### Securizar el sitio (Activar SSL)
+
+#### Activación del módulo y generación de certificados
+
+#### Redirecciones
