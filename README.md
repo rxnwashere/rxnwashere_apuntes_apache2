@@ -141,7 +141,7 @@ Ahora si accedemos a la ip del servidor desde el navegador veremos la página po
 
 ### Archivo /etc/apache2/ports.conf
 
-```bash
+```apache
 # If you just change the port or add more ports here, you will likely also
 # have to change the VirtualHost statement in
 # /etc/apache2/sites-enabled/000-default.conf
@@ -159,7 +159,7 @@ Listen 80
 
 Sirve para configurar que puertos escuchará el servidor web y bajo que condiciones usando la etiqueta <code>IfModule</code>:
 
-```bash
+```apache
 # If you just change the port or add more ports here, you will likely also
 # have to change the VirtualHost statement in
 # /etc/apache2/sites-enabled/000-default.conf
@@ -249,7 +249,7 @@ sudo a2disstie 000-default.conf
 sudo nano /etc/apache2/sites-available/aaron.conf
 ```
 
-```bash
+```apache
 <VirtualHost *:80>
         ServerName aaron.local    
         ServerAlias www.aaron.local
@@ -457,7 +457,7 @@ web@ubuntu-web-server:/var/www/aaron$ cat zona-restringida/index.html
 
 Editamos la configuración:
 
-```bash
+```apache
 <VirtualHost *:80>
         ServerName aaron.local
         ServerAlias www.aaron.local
@@ -523,7 +523,7 @@ web@ubuntu-web-server:/var/www/aaron$ sudo systemctl restart apache2
 
 Ahora modificamos la configuración:
 
-```bash
+```apache
 <VirtualHost *:80>
         ServerName aaron.local
         ServerAlias www.aaron.local
@@ -567,7 +567,150 @@ Recargamos la configuración y probamos el login.
 
 ![Login incorrecto](imgs/16.png)
 
+Exacto 👏 buena observación.
+Las directivas `Allow` y `Deny` **no se pueden usar directamente dentro de `<VirtualHost>`**, solo funcionan dentro de contextos como `<Directory>`, `<Files>` o `<Location>` (porque son directivas del módulo `mod_access_compat`).
+
+Aquí tienes la versión **corregida y explicada correctamente**, lista para tus apuntes:
+
+---
+
 ### Allow y Deny
+
+Las directivas **Allow** y **Deny** sirven para **restringir el acceso por dirección IP**.
+A diferencia de la autenticación por usuarios o contraseñas, este método controla **desde qué equipos se puede acceder al sitio**.
+
+Por ejemplo, para permitir el acceso desde cualquier dirección excepto desde `192.168.1.135`, podríamos escribir:
+
+```apache
+<VirtualHost *:8080>
+    ServerName aaron2.local
+    ServerAlias www.aaron2.local
+
+    DocumentRoot /var/www/aaron2
+
+    <Directory /var/www/aaron2>
+        Allow from all
+        Deny from 192.168.1.135
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/aaron2-error.log
+    CustomLog ${APACHE_LOG_DIR}/aaron2-access.log combined
+</VirtualHost>
+```
+
+En este caso:
+
+* `Allow from all` permite el acceso a todos los clientes.
+* `Deny from 192.168.1.135` bloquea el acceso solo a esa IP.
+
+El orden es importante: primero se permite el acceso general y luego se aplica la denegación a la IP concreta.
+
+También podríamos hacerlo al revés, bloqueando todo con:
+
+```apache
+Deny from all
+Allow from 192.168.1.100
+```
+
+para que **solo la IP `192.168.1.100`** pueda acceder al sitio.
+
+Si probamos desde la IP bloqueada (`192.168.1.135`), el acceso será **denegado**, mientras que desde cualquier otra IP sí se podrá entrar:
+
+![Acceso denegado desde IP 192.168.1.130](imgs/17.png)
+
+Si no nos funciona restringir de esta forma podemos usar la directiva <code>Order</code> para especificar si se aplica antes Allow o Deny:
+
+```apache
+<VirtualHost *:8080>
+    ServerName aaron2.local
+    ServerAlias www.aaron2.local
+
+    DocumentRoot /var/www/aaron2
+
+    <Directory /var/www/aaron2>
+	Order allow,deny
+	Allow from all
+        Deny from 192.168.1.135
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/aaron2-error.log
+    CustomLog ${APACHE_LOG_DIR}/aaron2-access.log combined
+</VirtualHost>
+```
+
+<code>Order allow,deny</code> --> Primero revisará que equipos pueden entrar y luego restringirá las direcciones IP especificadas.
+
+También podemos ocultar archivos cuando se lista el directorio con la etiqueta <code>&lt;Files&gt;</code>, para este ejemplo usaremos el sitio del puerto 80 y bloquearemos la visualización de archivos CSS para todos:
+
+```apache
+<VirtualHost *:80>
+	ServerName aaron.local
+	ServerAlias www.aaron.local
+
+	DocumentRoot /var/www/aaron
+
+	<Directory /var/www/aaron/lib>
+		Options +Indexes
+		<Files *.css>
+			Deny from all
+		</Files>
+	</Directory>
+	
+	<Directory /var/www/aaron/zona-restringida>
+		AuthType Basic
+		AuthName "Zona restringida con usuario y contraseña"
+		AuthBasicProvider file
+		AuthUserFile /var/www/aaron/secret
+		AuthGroupFile /var/www/aaron/group
+		Require group autorizados
+	</Directory>
+
+	ErrorLog ${APACHE_LOG_DIR}/aaron-error.log
+	CustomLog ${APACHE_LOG_DIR}/aaron-access.log combined
+</VirtualHost>
+```
+
+Recargamos la configuración y veremos que en el directorio especificado hay un archivo CSS, pero cuando accedemos desde el navegador no vemos ninguno:
+
+![Archivos CSS ocultos por las restricciones](imgs/18.png)
+
+También funciona con la etiqueta <code>&lt;FilesMatch&gt;</code>:
+
+```apache
+<VirtualHost *:80>
+        ServerName aaron.local
+        ServerAlias www.aaron.local
+
+        DocumentRoot /var/www/aaron
+
+        <Directory /var/www/aaron/lib>
+                Options +Indexes
+                <FilesMatch "\.css$">
+                        Require all denied
+                </FilesMatch>
+        </Directory>
+
+        <Directory /var/www/aaron/zona-restringida>
+                AuthType Basic
+                AuthName "Zona restringida con usuario y contraseña"
+                AuthBasicProvider file
+                AuthUserFile /var/www/aaron/secret
+                AuthGroupFile /var/www/aaron/group
+                Require group autorizados
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/aaron-error.log
+        CustomLog ${APACHE_LOG_DIR}/aaron-access.log combined
+</VirtualHost>
+```
+
+**Diferencias clave**: <code>&lt;FilesMatch&gt;</code> permite el uso de regex para seleccionar los archivos a permitir o restringir y usa el modo de restricción moderno con <code>Require</code>.
+
+<code>Require all denied</code> --> Restringe el acceso a cualquier equipo. Podemos cambiar all por una IP cualquiera.
+
+<code>Require all granted</code> --> Permite el acceso a cualquier equipo. Podemos cambiar all por una IP cualquiera.
+
+![Archivos CSS ocultos por las restricciones](imgs/19.png)
 
 ### Página de error personalizada.
 
