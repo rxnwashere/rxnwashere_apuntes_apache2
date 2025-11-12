@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="apuntes-apache2">Apuntes Apache2</h1>
+<h2 id="%F0%9F%93%91-contenidos">📑 Contenidos</h2>
+<ol>
+<li><a href="#que-es-apache2">🔎 ¿Qué es Apache2?</a></li>
+<li><a href="#protocolos-http-y-https">🌐 Protocolos HTTP y HTTPS</a></li>
+<li><a href="#usuario">👤 Usuario</a></li>
+<li><a href="#conexi%C3%B3n-remota-con-el-servidor">💻 Conexión remota con el servidor</a></li>
+<li><a href="#instalaci%C3%B3n">🛠️ Instalación</a></li>
+<li><a href="#configuraciones">⚙️ Configuraciones</a>
+<ul>
+<li><a href="#archivo-etcapache2portsconf">📝 Archivo /etc/apache2/ports.conf</a></li>
+<li><a href="#configuraci%C3%B3n-inicial-del-sitio">🏠 Configuración inicial del sitio</a></li>
+<li><a href="#archivo-etchosts">📒 Archivo /etc/hosts</a></li>
+<li><a href="#prueba-de-configuraci%C3%B3n-inicial">🔍 Prueba de configuración inicial</a></li>
+</ul>
+</li>
+<li><a href="#configuraci%C3%B3n-de-restricciones">🔒 Configurar acceso restringido</a>
+<ul>
+<li><a href="#acceso-restringido-por-usuarios">🙎‍♂️ Acceso restringido por usuarios</a></li>
+<li><a href="#acceso-restringido-por-grupos">👥 Acceso restringido por grupos</a></li>
+<li><a href="#allow-y-deny">🚫 Allow y Deny - Restricción por IP</a></li>
+</ul>
+</li>
+<li><a href="#p%C3%A1gina-de-error-personalizada">❌ Página de error personalizada</a></li>
+<li><a href="#activar-ssl">🔐 Activar SSL</a></li>
+<li><a href="#-recursos-recomendados">📚 Recursos recomendados</a></li>
+</ol>
+<h2 id="%F0%9F%94%8E-%C2%BFqu%C3%A9-es-apache2">🔎 ¿Qué es Apache2?</h2>
+<p><a id="que-es-apache2"></a>
+<strong>Apache2</strong> es un <strong>servidor web</strong> muy utilizado en sistemas Linux.
+Su función principal es servir páginas web a través de los protocolos <strong>HTTP y HTTPS</strong>.</p>
+<h2 id="%F0%9F%8C%90-protocolos-http-y-https">🌐 Protocolos HTTP y HTTPS</h2>
+<p><a id="protocolos-http-y-https"></a>
+Siglas de <strong>HyperText Transfer Protocol</strong>, transfiere principalmente documentos HTML y multimedia.
+<strong>HTTPS</strong> es la <strong>versión segura</strong> de HTTP.</p>
+<h3 id="puertos">Puertos</h3>
+<pre class="hljs"><code><div>HTTP --&gt; Puerto 80
+HTTPS --&gt; Puerto 443
+</div></code></pre>
+<h2 id="%F0%9F%91%A4-usuario">👤 Usuario</h2>
+<p><a id="usuario"></a></p>
+<p>Apache2 utiliza el usuario <code>www-data</code>.</p>
+<h2 id="%F0%9F%92%BB-conexi%C3%B3n-remota-con-el-servidor">💻 Conexión remota con el servidor</h2>
+<p><a id="conexión-remota-con-el-servidor"></a></p>
+<p>Para trabajar de forma más comoda con nuestro servidor podemos usar ssh para conectarnos desde nuestro terminal de forma remota al servidor:</p>
+<pre class="hljs"><code><div>ssh web@192.168.1.130
+</div></code></pre>
+<p><code>ssh &lt;usuario&gt;@&lt;IP-Servidor&gt; </code></p>
+<p>Nos pedirá añadir el fingerprint y la contraseña del usuario remoto.</p>
+<h2 id="%F0%9F%9B%A0%EF%B8%8F-instalaci%C3%B3n">🛠️ Instalación</h2>
+<p><a id="instalación"></a></p>
+<p>Para la instalación de Apache2 es recomendable que nuestro servidor disponga de una <strong>IP fija</strong>, podemos configurarla desde el archivo <strong>Netplan</strong>:</p>
+<pre class="hljs"><code><div>sudo nano /etc/netplan/50-cloud-init.yaml
+</div></code></pre>
+<p><strong>Nota</strong>: Es posible que el archivo también pueda llevar el nombre <code>00-installer-config.yaml</code>, pero la ubicación del archivo será siempre en <code>/etc/netplan</code>, se deberá editar el arrchivo ubicado en ese directorio.</p>
+<p><strong>Ejemplo de configuración de Netplan</strong>:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># This file is generated from information provided by the datasource.  Changes</span>
+<span class="hljs-comment"># to it will not persist across an instance reboot.  To disable cloud-init's</span>
+<span class="hljs-comment"># network configuration capabilities, write a file</span>
+<span class="hljs-comment"># /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg with the following:</span>
+<span class="hljs-comment"># network: {config: disabled}</span>
+network:
+    ethernets:
+        enp0s3:
+            dhcp4: no
+            addresses:
+              - 192.168.1.130/24
+            routes:
+              - to: default
+                via: 192.168.1.1
+            nameservers:
+              addresses: [8.8.8.8,8.8.4.4]
+    version: 2
+</div></code></pre>
+<p><code>enp0s3</code> --&gt; Puerto Ethernet del servidor donde se hará la configuración.</p>
+<p><code>dhcp4: no</code> --&gt; <strong>Desactivamos la asignación de IPv4 por DHCP</strong>, de esta forma podremos configurarla manualmente.</p>
+<p><code>addresses</code> --&gt; <strong>Asignación de direcciones IP</strong>, se puede asignar más de una.</p>
+<p><code>routes</code> --&gt; <strong>Asignación del gateway</strong>, normalmente será la dirección IP del Router. Puedes averiguar la IP del gateway de tu red usando el comando <code>ip route | grep default</code>:</p>
+<pre class="hljs"><code><div>rxn@pop-os:~$ ip route | grep default
+default via 192.168.1.1 dev wlp6s0 proto dhcp metric 600 
+</div></code></pre>
+<p>Nuestro gateway es <code>192.168.1.1</code></p>
+<p><code>nameservers</code> --&gt; <strong>Asignación de servidores DNS</strong>, se puede asignar más de uno.</p>
+<p>Una vez hayas configurado todo aplica los cambios y comprueba tu ip, si no sale ningún error lo has configurado correctamente:</p>
+<pre class="hljs"><code><div>web@ubuntu-web-server:~$ sudo netplan apply
+[sudo] password <span class="hljs-keyword">for</span> web: 
+web@ubuntu-web-server:~$ ip a
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute 
+       valid_lft forever preferred_lft forever
+2: enp0s3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:9c:b5:06 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.1.130/24 brd 192.168.1.255 scope global enp0s3
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe9c:b506/64 scope link 
+       valid_lft forever preferred_lft forever
+web@ubuntu-web-server:~$ 
+</div></code></pre>
+<p><a href="https://netplan.io/"><strong>Documentación oficial de Cannonical</strong></a></p>
+<p>Si tu distribución es <strong>Debian</strong> o alguna otra <strong>no basada en Ubuntu</strong> o que <strong>no disponga de Netplan</strong> entonces se deberá configurar el archivo <code>/etc/network/interfaces</code>.</p>
+<p><strong>Ejemplo de configuración de Interfaces</strong>:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># Configuración de red estática para Debian</span>
+auto enp0s3
+iface enp0s3 inet static
+    address 192.168.1.130
+    netmask 255.255.255.0
+    gateway 192.168.1.1
+    dns-nameservers 8.8.8.8 8.8.4.4
+
+</div></code></pre>
+<p>Luego reinicia la red con:</p>
+<pre class="hljs"><code><div>sudo systemctl restart networking
+</div></code></pre>
+<p><a href="https://www.cyberciti.biz/faq/setting-up-an-network-interfaces-file/"><strong>Guia de nixCraft sobre /etc/network/interfaces</strong></a></p>
+<p>Ahora sí podremos instalar Apache:</p>
+<pre class="hljs"><code><div>sudo apt install apache2 -y
+</div></code></pre>
+<p>Ahora si accedemos a la ip del servidor desde el navegador veremos la página por defecto de Apache, indicando que se ha instalado correctamente:</p>
+<p><img src="imgs/01.png" alt="Página por defecto de Apache"></p>
+<h2 id="%E2%9A%99%EF%B8%8F-configuraciones">⚙️ Configuraciones</h2>
+<p><a id="configuraciones"></a></p>
+<h3 id="%F0%9F%93%9D-archivo-etcapache2portsconf">📝 Archivo /etc/apache2/ports.conf</h3>
+<p><a id="archivo-etcapache2portsconf"></a></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># If you just change the port or add more ports here, you will likely also</span>
+<span class="hljs-comment"># have to change the VirtualHost statement in</span>
+<span class="hljs-comment"># /etc/apache2/sites-enabled/000-default.conf</span>
+
+<span class="hljs-attribute"><span class="hljs-nomarkup">Listen</span></span> 80
+
+<span class="hljs-section">&lt;IfModule ssl_module&gt;</span>
+	<span class="hljs-attribute"><span class="hljs-nomarkup">Listen</span></span> 443
+<span class="hljs-section">&lt;/IfModule&gt;</span>
+
+<span class="hljs-section">&lt;IfModule mod_gnutls.c&gt;</span>
+	<span class="hljs-attribute"><span class="hljs-nomarkup">Listen</span></span> 443
+<span class="hljs-section">&lt;/IfModule&gt;</span>
+</div></code></pre>
+<p>Sirve para configurar que puertos escuchará el servidor web y bajo que condiciones usando la etiqueta <code>IfModule</code>:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># If you just change the port or add more ports here, you will likely also</span>
+<span class="hljs-comment"># have to change the VirtualHost statement in</span>
+<span class="hljs-comment"># /etc/apache2/sites-enabled/000-default.conf</span>
+
+<span class="hljs-attribute"><span class="hljs-nomarkup">Listen</span></span> 80
+<span class="hljs-attribute"><span class="hljs-nomarkup">Listen</span></span> 8080
+
+<span class="hljs-section">&lt;IfModule ssl_module&gt;</span>
+        <span class="hljs-attribute"><span class="hljs-nomarkup">Listen</span></span> 443
+        <span class="hljs-attribute"><span class="hljs-nomarkup">Listen</span></span> 8443
+<span class="hljs-section">&lt;/IfModule&gt;</span>
+
+<span class="hljs-section">&lt;IfModule mod_gnutls.c&gt;</span>
+        <span class="hljs-attribute"><span class="hljs-nomarkup">Listen</span></span> 443
+<span class="hljs-section">&lt;/IfModule&gt;</span>
+</div></code></pre>
+<p>Recargamos la configuración de Apache:</p>
+<pre class="hljs"><code><div>sudo systemctl reload apache2
+</div></code></pre>
+<p>Ahora escuchará por los puertos <strong>80</strong> y <strong>8080</strong> para <strong>HTTP</strong> y <strong>443</strong> y <strong>8443</strong> para <strong>HTTPS</strong> cuando el <strong>módulo SSL esté activo</strong>, podemos ver esto claro con el comando <code>ss -punta</code>:</p>
+<pre class="hljs"><code><div>web@ubuntu-web-server:~$ ss -punta
+Netid State  Recv-Q Send-Q          Local Address:Port             Peer Address:Port                                   Process                                  
+udp   UNCONN 0      0                  127.0.0.54:53                    0.0.0.0:*                                                                               
+udp   UNCONN 0      0               127.0.0.53%lo:53                    0.0.0.0:*                                                                               
+tcp   LISTEN 0      4096               127.0.0.54:53                    0.0.0.0:*                                                                               
+tcp   LISTEN 0      4096                  0.0.0.0:22                    0.0.0.0:*                                                                               
+tcp   LISTEN 0      4096            127.0.0.53%lo:53                    0.0.0.0:*                                                                               
+tcp   LISTEN 0      511                         *:8080                        *:*                                                                               
+tcp   LISTEN 0      4096                     [::]:22                       [::]:*                                                                               
+tcp   LISTEN 0      511                         *:80                          *:*                                                                               
+tcp   ESTAB  0      0      [::ffff:192.168.1.130]:22     [::ffff:192.168.1.135]:43576   
+</div></code></pre>
+<p>Como el módulo SSL no está activo solo veremos los puertos que escucha HTTP, que son el 80 y el 8080 como hemos configurado anteriormente.</p>
+<p>Si activamos el módulo SSL y recargamos la configuración veremos los puertos configurados para el módulo:</p>
+<pre class="hljs"><code><div>web@ubuntu-web-server:~$ sudo a2enmod ssl
+[sudo] password <span class="hljs-keyword">for</span> web: 
+Considering dependency mime <span class="hljs-keyword">for</span> ssl:
+Module mime already enabled
+Considering dependency socache_shmcb <span class="hljs-keyword">for</span> ssl:
+Enabling module socache_shmcb.
+Enabling module ssl.
+See /usr/share/doc/apache2/README.Debian.gz on how to configure SSL and create self-signed certificates.
+To activate the new configuration, you need to run:
+  systemctl restart apache2
+web@ubuntu-web-server:~$ sudo systemctl reload apache2
+web@ubuntu-web-server:~$ ss -punta
+Netid State   Recv-Q  Send-Q   Local Address:Port    Peer Address:Port  Process 
+udp   UNCONN  0       0           127.0.0.54:53           0.0.0.0:*             
+udp   UNCONN  0       0        127.0.0.53%lo:53           0.0.0.0:*             
+tcp   LISTEN  0       4096           0.0.0.0:22           0.0.0.0:*             
+tcp   LISTEN  0       4096        127.0.0.54:53           0.0.0.0:*             
+tcp   LISTEN  0       4096     127.0.0.53%lo:53           0.0.0.0:*             
+tcp   ESTAB   0       0        192.168.1.130:22     192.168.1.135:33486         
+tcp   LISTEN  0       511                  *:80                 *:*             
+tcp   LISTEN  0       4096              [::]:22              [::]:*             
+tcp   LISTEN  0       511                  *:8443               *:*             
+tcp   LISTEN  0       511                  *:443                *:*             
+tcp   LISTEN  0       511                  *:8080               *:*  
+</div></code></pre>
+<p>Ahora ya aparecen los puertos seguros para HTTPS.</p>
+<p>Si quiseramos desactivar el módulo deberiamos utilizar el siguiente comando:</p>
+<pre class="hljs"><code><div>sudo a2dismod ssl
+</div></code></pre>
+<h3 id="%F0%9F%8F%A0-configuraci%C3%B3n-inicial-del-sitio">🏠 Configuración inicial del sitio</h3>
+<p><a id="configuración-inicial-del-sitio"></a></p>
+<p><strong>Directorios importantes:</strong></p>
+<ul>
+<li>
+<p><code>/etc/apache2/sites-enabled</code></p>
+</li>
+<li>
+<p><code>/etc/apache2/sites-available</code></p>
+</li>
+</ul>
+<p>En <code>sites-available</code> crearemos las configuraciones con sus respectivos <strong>VirtualHost</strong>, cuando activemos las configuraciones se crearan enlaces simbolicos en <code>sites-enabled</code>.</p>
+<p>Primero desactivaremos la configuración por defecto y crearemos una nueva:</p>
+<pre class="hljs"><code><div>sudo a2disstie 000-default.conf
+sudo nano /etc/apache2/sites-available/aaron.conf
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-section">&lt;VirtualHost *:80&gt;</span>
+        <span class="hljs-attribute"><span class="hljs-nomarkup">ServerName</span></span> aaron.local    
+        <span class="hljs-attribute">ServerAlias</span> www.aaron.local
+
+        <span class="hljs-attribute"><span class="hljs-nomarkup">DocumentRoot</span></span> /var/www/aaron
+
+        <span class="hljs-section">&lt;Directory /var/www/aaron/lib&gt;</span>
+                <span class="hljs-attribute"><span class="hljs-nomarkup">Options</span></span> -Indexes
+        <span class="hljs-section">&lt;/Directory&gt;</span>
+
+        <span class="hljs-attribute">ErrorLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron-error.log
+        <span class="hljs-attribute">CustomLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron-access.log combined
+<span class="hljs-section">&lt;/VirtualHost&gt;</span>
+
+<span class="hljs-section">&lt;VirtualHost *:8080&gt;</span>
+        <span class="hljs-attribute"><span class="hljs-nomarkup">ServerName</span></span> aaron2.local
+        <span class="hljs-attribute">ServerAlias</span> www.aaron2.local
+
+        <span class="hljs-attribute"><span class="hljs-nomarkup">DocumentRoot</span></span> /var/www/aaron2
+
+        <span class="hljs-section">&lt;Directory /var/www/aaron2/lib&gt;</span>
+                <span class="hljs-attribute"><span class="hljs-nomarkup">Options</span></span> +Indexes
+        <span class="hljs-section">&lt;/Directory&gt;</span>
+
+        <span class="hljs-attribute">ErrorLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron2-error.log
+        <span class="hljs-attribute">CustomLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron2-access.log combined
+<span class="hljs-section">&lt;/VirtualHost&gt;</span>
+
+<span class="hljs-section">&lt;IfModule mod_ssl.c&gt;</span>
+        <span class="hljs-section">&lt;VirtualHost *:443&gt;</span>
+
+        <span class="hljs-section">&lt;/VirtualHost&gt;</span>
+
+        <span class="hljs-section">&lt;VirtualHost *:8443&gt;</span>
+
+        <span class="hljs-section">&lt;/VirtualHost&gt;</span>
+<span class="hljs-section">&lt;/IfModule&gt;</span>
+</div></code></pre>
+<p>De momento no utilizaremos los <code>VirtualHost</code> para HTTPS, centremonos en los HTTP puerto 80 y 8080.</p>
+<p><code>*</code> --&gt; Cualquier IP. Podemos poner una especifica si es necesario.</p>
+<p><code>80/8080</code> --&gt; Puerto por el que se accede</p>
+<p><code>ServerName</code> --&gt; Nombre con el cual se puede acceder al sitio en lugar de la IP.</p>
+<p><code>ServerAlias</code> --&gt; Nombre alternativo con el cual podemos acceder al servidor.</p>
+<p><code>DocumentRoot</code> --&gt; Ubicación donde se sirven los archivos HTML de la página.</p>
+<p><code>Directory</code> --&gt; Directivas que afectan al directorio especificado en la etiqueta.</p>
+<p><code>Options +/- Indexes</code> --&gt; Sirve par activar o desactivar el listado del contenido del directorio en caso de que no se encuentre un archivo <zcode>index.html</code></p>
+<p><code>ErroLog y CustomLog</code> --&gt; Logs del sitio. Es recomendable tener logs independientes por cada VirtualHost.</p>
+<p>Ahora creamos los directorios y archivos, habilitamos la configuración y recargamos la configuración:</p>
+<pre class="hljs"><code><div>web@ubuntu-web-server:/etc/apache2$ sudo mkdir -p /var/www/aaron/lib
+web@ubuntu-web-server:/etc/apache2$ sudo mkdir -p /var/www/aaron2/lib
+web@ubuntu-web-server:/etc/apache2$ ls -la /var/www/
+total 20
+drwxr-xr-x  5 root root 4096 nov 11 13:59 .
+drwxr-xr-x 14 root root 4096 nov 10 09:57 ..
+drwxr-xr-x  3 root root 4096 nov 11 13:58 aaron
+drwxr-xr-x  3 root root 4096 nov 11 13:59 aaron2
+drwxr-xr-x  2 root root 4096 nov 10 09:57 html
+web@ubuntu-web-server:/etc/apache2$ sudo nano /var/www/aaron/index.html 
+<span class="hljs-comment"># Aqui creamos los archivos e introducimos el contenido</span>
+web@ubuntu-web-server:/etc/apache2$ sudo nano /var/www/aaron2/index.html
+web@ubuntu-web-server:/etc/apache2$ cat /var/www/aaron/index.html 
+&lt;h1&gt;Bienvenido a mi web por el puerto 80&lt;/h1&gt;
+web@ubuntu-web-server:/etc/apache2$ cat /var/www/aaron2/index.html 
+&lt;h1&gt;Bienvenido a mi web por el puerto 8080&lt;/h1&gt;
+web@ubuntu-web-server:/etc/apache2$ sudo a2ensite aaron.conf 
+Enabling site aaron.
+To activate the new configuration, you need to run:
+  systemctl reload apache2
+web@ubuntu-web-server:/etc/apache2$ sudo systemctl reload apache2
+</div></code></pre>
+<h3 id="%F0%9F%93%92-archivo-etchosts">📒 Archivo /etc/hosts</h3>
+<p><a id="archivo-etchosts"></a></p>
+<p>Como no disponemos de servidor DNS ni tenemos nuestro sitio en un hosting externo utilizaremos el archivo /etc/hosts en nuestra máquina y en el servidor para reconocer <code>ServerName</code> y <code>ServerAlias</code>.</p>
+<pre class="hljs"><code><div>sudo nano /etc/hosts
+</div></code></pre>
+<p><strong>Cliente</strong>:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># See `man hosts` for details.</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment"># By default, systemd-resolved or libnss-myhostname will resolve</span>
+<span class="hljs-comment"># localhost and the system hostname if they're not specified here.</span>
+127.0.0.1       localhost
+::1             localhost
+192.168.1.135   pop-os
+192.168.1.130   aaron.local     aaron2.local    www.aaron.local         www.aaron2.local
+</div></code></pre>
+<p><strong>Servidor</strong>:</p>
+<pre class="hljs"><code><div>127.0.0.1 localhost
+127.0.1.1 ubuntu-web-server
+127.0.1.1       aaron.local     aaron2.local    www.aaron.local         www.aaron2.local
+<span class="hljs-comment"># The following lines are desirable for IPv6 capable hosts</span>
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+</div></code></pre>
+<h3 id="%F0%9F%94%8D-prueba-de-configuraci%C3%B3n-inicial">🔍 Prueba de configuración inicial</h3>
+<p><a id="prueba-de-configuración-inicial"></a></p>
+<p>Ahora si intentamos acceder al sitio desde los nombres especificados y sus puertos veremos que funciona correctamente:</p>
+<p><strong>aaron.local y www.aaron.local</strong>:</p>
+<p><img src="imgs/02.png" alt="Prueba del sitio que funciona por el puerto 80"></p>
+<p><img src="imgs/03.png" alt="Prueba del sitio que funciona por el puerto 80"></p>
+<p><strong>aaron2.local:8080 y www.aaron2.local:8080</strong>:</p>
+<p><img src="imgs/04.png" alt="Prueba del sitio que funciona por el puerto 8080"></p>
+<p><img src="imgs/05.png" alt="Prueba del sitio que funciona por el puerto 8080"></p>
+<p>Si intenamos acceder al index de lib del puerto 80 y 8080 deberia pasar lo siguiente:</p>
+<ul>
+<li>
+<p>Puerto 80: <code>403 Forbidden</code>
+<img src="imgs/06.png" alt="403 Forbidden al intentar acceder al index de aaron.local/lib. Esto es porque en la etiqueta Directory especificamos Options -Indexes."></p>
+</li>
+<li>
+<p>Puerto 8080: Listará el contenido del directorio.
+<img src="imgs/07.png" alt="Accede al index porque especificamos Options +Indexes"></p>
+</li>
+</ul>
+<p>Esta restricción <strong>solo afecta al listado del directorio por parte del cliente</strong>, no afecta en los recursos que pueda utilizar la página. Por ejemplo, si añadimos una hoja de estilos CSS en aaron.local/lib siempre y cuando el documento HTML tenga la etiqueta link apuntando hacia el archivo CSS adoptará los estilos.</p>
+<pre class="hljs"><code><div><span class="hljs-selector-tag">body</span> { 
+        <span class="hljs-attribute">background-color</span>: black;
+        <span class="hljs-attribute">color</span>: white;
+}
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"lib/styles.css"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Bienvenido a mi web por el puerto 80<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+</div></code></pre>
+<p>Sin recargar la configuración, si ahora accedemos a la página del puerto 80 veremos que los estilos se han aplicado sin problemas:</p>
+<p><img src="imgs/08.png" alt="Estilos aplicados aún teniendo restricción de listar el directorio"></p>
+<h3 id="%F0%9F%94%92-configurar-acceso-restringido">🔒 Configurar acceso restringido</h3>
+<p><a id="configuración-de-restricciones"></a></p>
+<p>Es posible configurar restricciones en nuestro servidor web a diferentes niveles como por ejemplo, por usuarios, grupos o direcciones IP...</p>
+<h4 id="%F0%9F%99%8E%E2%80%8D%E2%99%82%EF%B8%8F-acceso-restringido-por-usuarios">🙎‍♂️ Acceso restringido por usuarios</h4>
+<p><a id="acceso-restringido-por-usuarios"></a></p>
+<p>Usando la etiqueta <code>Directory</code> en la configuración de nuestro sitio y el comando <code>htpasswd</code> podemos crear una restricción por usuarios, cuando se intente acceder al sitio restringido se pedirá un usuario y contraseña:</p>
+<pre class="hljs"><code><div>web@ubuntu-web-server:/var/www/aaron$ sudo htpasswd -c secret Aaron
+New password: 
+Re-type new password: 
+Adding password <span class="hljs-keyword">for</span> user Aaron
+web@ubuntu-web-server:/var/www/aaron$ sudo htpasswd secret Matilda
+New password: 
+Re-type new password: 
+Adding password <span class="hljs-keyword">for</span> user Matilda
+web@ubuntu-web-server:/var/www/aaron$ cat secret 
+Aaron:<span class="hljs-variable">$apr1</span><span class="hljs-variable">$zcorPY</span>/y<span class="hljs-variable">$6mvrMl2EDURj0OiYDQ34f1</span>
+Matilda:<span class="hljs-variable">$apr1</span><span class="hljs-variable">$PQYCNAzl</span><span class="hljs-variable">$v7O</span>/NY9euvWBC5aoNuqjV.
+</div></code></pre>
+<p>Creamos el archivo <code>secret</code> (puedes ponerle cualquier nombre) usando el parámetro <code>-c</code> del comando <code>htpasswd</code>, es importante introducir un usuario en la creación, si no se hace no se creará el archivo.</p>
+<pre class="hljs"><code><div>sudo htpasswd -c &lt;nombre-archivo&gt; &lt;usuario&gt;
+</div></code></pre>
+<p>Para sobreescribir el archivo y añadir un nuevo usuario repetimos el proceso <strong>sin el parámetro <code>-c</code></strong>.</p>
+<pre class="hljs"><code><div>sudo htpasswd &lt;nombre-archivo&gt; &lt;usuario&gt;
+</div></code></pre>
+<p>Los usuarios se guardaran con los nombres asignados y con las contraseñas hasheadas.</p>
+<p>Ahora crearemos un sitio de prueba dentro de aaron.local (Puerto 80) para probar esta restricción:</p>
+<pre class="hljs"><code><div>web@ubuntu-web-server:/var/www/aaron$ sudo mkdir zona-restringida
+web@ubuntu-web-server:/var/www/aaron$ sudo nano zona-restringida/index.html
+web@ubuntu-web-server:/var/www/aaron$ cat zona-restringida/index.html 
+&lt;h1&gt;Te damos la bienvenida a la zona restringida&lt;/h1&gt;
+</div></code></pre>
+<p>Editamos la configuración:</p>
+<pre class="hljs"><code><div><span class="hljs-section">&lt;VirtualHost *:80&gt;</span>
+        <span class="hljs-attribute"><span class="hljs-nomarkup">ServerName</span></span> aaron.local
+        <span class="hljs-attribute">ServerAlias</span> www.aaron.local
+
+        <span class="hljs-attribute"><span class="hljs-nomarkup">DocumentRoot</span></span> /var/www/aaron
+
+        <span class="hljs-section">&lt;Directory /var/www/aaron/lib&gt;</span>
+                <span class="hljs-attribute"><span class="hljs-nomarkup">Options</span></span> -Indexes
+        <span class="hljs-section">&lt;/Directory&gt;</span>
+
+        <span class="hljs-section">&lt;Directory /var/www/aaron/zona-restringida&gt;</span>
+                <span class="hljs-attribute">AuthType</span> Basic
+                <span class="hljs-attribute">AuthName</span> <span class="hljs-string">"Zona restringida con usuario y contraseña"</span>
+                <span class="hljs-attribute">AuthBasicProvider</span> file
+                <span class="hljs-attribute">AuthUserFile</span> /var/www/aaron/secret
+                <span class="hljs-attribute">Require</span> valid-user
+        <span class="hljs-section">&lt;/Directory&gt;</span>
+
+        <span class="hljs-attribute">ErrorLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron-error.log
+        <span class="hljs-attribute">CustomLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron-access.log combined
+<span class="hljs-section">&lt;/VirtualHost&gt;</span>
+</div></code></pre>
+<p>Recargamos la configuración y probamos acceder a la zona restringida:</p>
+<p><strong>Login correcto</strong>:</p>
+<p><img src="imgs/09.png" alt="Alert para introducir credenciales. Si no las introducimos tendremos un error 401 Unauthorized"></p>
+<p><img src="imgs/10.png" alt="Login correcto. Nos permite ver el contenido de la página"></p>
+<p><strong>Login incorrecto</strong>:</p>
+<p>Probaremos con un usuario inexistente, pero no aceptará tampoco si se falla la contraseña de un usuario existente en el alert:</p>
+<p><img src="imgs/11.png" alt="Usuario inventado para login incorrecto."></p>
+<p><img src="imgs/12.png" alt="Error 401"></p>
+<p>El alert del navegador seguirá apareciendo hasta que se introduzcan credenciales válidos, si cancelamos saltará <strong>Error 401 Unauthorized</strong>.</p>
+<h4 id="%F0%9F%91%A5-acceso-restringido-por-grupos">👥 Acceso restringido por grupos</h4>
+<p><a id="acceso-restringido-por-grupos"></a></p>
+<p>Con los usuarios creados podemos crear grupos y restringir el acceso a los usuarios que no pertenezcan a un grupo especifico.</p>
+<p>Para ello habilitaremos el módulo <code>authz_groupfile</code> y crearemos un archivo con los grupos y los usuarios que pertenecen a estos:</p>
+<pre class="hljs"><code><div>web@ubuntu-web-server:/var/www/aaron$ sudo a2enmod authz_groupfile 
+[sudo] password <span class="hljs-keyword">for</span> web: 
+Considering dependency authz_core <span class="hljs-keyword">for</span> authz_groupfile:
+Module authz_core already enabled
+Enabling module authz_groupfile.
+To activate the new configuration, you need to run:
+  systemctl restart apache2
+web@ubuntu-web-server:/var/www/aaron$ sudo touch group
+web@ubuntu-web-server:/var/www/aaron$ sudo nano group
+web@ubuntu-web-server:/var/www/aaron$ cat group
+autorizados: Aaron
+no: Matilda
+web@ubuntu-web-server:/var/www/aaron$ sudo systemctl restart apache2
+</div></code></pre>
+<p>Ahora modificamos la configuración:</p>
+<pre class="hljs"><code><div><span class="hljs-section">&lt;VirtualHost *:80&gt;</span>
+        <span class="hljs-attribute"><span class="hljs-nomarkup">ServerName</span></span> aaron.local
+        <span class="hljs-attribute">ServerAlias</span> www.aaron.local
+
+        <span class="hljs-attribute"><span class="hljs-nomarkup">DocumentRoot</span></span> /var/www/aaron
+
+        <span class="hljs-section">&lt;Directory /var/www/aaron/lib&gt;</span>
+                <span class="hljs-attribute"><span class="hljs-nomarkup">Options</span></span> -Indexes
+        <span class="hljs-section">&lt;/Directory&gt;</span>
+
+        <span class="hljs-section">&lt;Directory /var/www/aaron/zona-restringida&gt;</span>
+                <span class="hljs-attribute">AuthType</span> Basic
+                <span class="hljs-attribute">AuthName</span> <span class="hljs-string">"Zona restringida con usuario y contraseña"</span>
+                <span class="hljs-attribute">AuthBasicProvider</span> file
+                <span class="hljs-attribute">AuthUserFile</span> /var/www/aaron/secret
+                <span class="hljs-attribute">AuthGroupFile</span> /var/www/aaron/group
+                <span class="hljs-attribute">Require</span> group autorizados
+        <span class="hljs-section">&lt;/Directory&gt;</span>
+
+        <span class="hljs-attribute">ErrorLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron-error.log
+        <span class="hljs-attribute">CustomLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron-access.log combined
+<span class="hljs-section">&lt;/VirtualHost&gt;</span>
+</div></code></pre>
+<p><strong>Cambios</strong>:</p>
+<ul>
+<li>Se ha añadido la directiva <code>AuthGroupFile</code> para indicar la ubiación del archivo que contiene los grupos y sus miembros.</li>
+<li>Se ha reemplazado <code>Require valid-user</code> por <code>Require group autorizados</code>, indicando que ahora solo se aceptarán usuarios válido <strong>y que pertenezcan al grupo o grupos indicados</strong>.</li>
+</ul>
+<p>Recargamos la configuración y probamos el login.</p>
+<p><strong>Login correcto</strong>:</p>
+<p><img src="imgs/13.png" alt="Probando con usuario Aaron perteneciente a grupo autorizados. Este usuario podrá acceder."></p>
+<p><img src="imgs/14.png" alt="Login correcto"></p>
+<p><strong>Login incorrecto</strong>:</p>
+<p><img src="imgs/15.png" alt="Probando con usuario Matilda perteneciente a grupo no. No podrá acceder."></p>
+<p><img src="imgs/16.png" alt="Login incorrecto"></p>
+<p>Exacto 👏 buena observación.
+Las directivas <code>Allow</code> y <code>Deny</code> <strong>no se pueden usar directamente dentro de <code>&lt;VirtualHost&gt;</code></strong>, solo funcionan dentro de contextos como <code>&lt;Directory&gt;</code>, <code>&lt;Files&gt;</code> o <code>&lt;Location&gt;</code> (porque son directivas del módulo <code>mod_access_compat</code>).</p>
+<p>Aquí tienes la versión <strong>corregida y explicada correctamente</strong>, lista para tus apuntes:</p>
+<hr>
+<h3 id="%F0%9F%9A%AB-allow-y-deny---restricci%C3%B3n-por-ip">🚫 Allow y Deny - Restricción por IP</h3>
+<p><a id="allow-y-deny"></a></p>
+<p>Las directivas <strong>Allow</strong> y <strong>Deny</strong> sirven para <strong>restringir el acceso por dirección IP</strong>.
+A diferencia de la autenticación por usuarios o contraseñas, este método controla <strong>desde qué equipos se puede acceder al sitio</strong>.</p>
+<p>Por ejemplo, para permitir el acceso desde cualquier dirección excepto desde <code>192.168.1.135</code>, podríamos escribir:</p>
+<pre class="hljs"><code><div><span class="hljs-section">&lt;VirtualHost *:8080&gt;</span>
+    <span class="hljs-attribute"><span class="hljs-nomarkup">ServerName</span></span> aaron2.local
+    <span class="hljs-attribute">ServerAlias</span> www.aaron2.local
+
+    <span class="hljs-attribute"><span class="hljs-nomarkup">DocumentRoot</span></span> /var/www/aaron2
+
+    <span class="hljs-section">&lt;Directory /var/www/aaron2&gt;</span>
+        <span class="hljs-attribute"><span class="hljs-nomarkup">Allow</span></span> from <span class="hljs-literal">all</span>
+        <span class="hljs-attribute"><span class="hljs-nomarkup">Deny</span></span> from 192.168.1.135
+    <span class="hljs-section">&lt;/Directory&gt;</span>
+
+    <span class="hljs-attribute">ErrorLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron2-error.log
+    <span class="hljs-attribute">CustomLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron2-access.log combined
+<span class="hljs-section">&lt;/VirtualHost&gt;</span>
+</div></code></pre>
+<p>En este caso:</p>
+<ul>
+<li><code>Allow from all</code> permite el acceso a todos los clientes.</li>
+<li><code>Deny from 192.168.1.135</code> bloquea el acceso solo a esa IP.</li>
+</ul>
+<p>El orden es importante: primero se permite el acceso general y luego se aplica la denegación a la IP concreta.</p>
+<p>También podríamos hacerlo al revés, bloqueando todo con:</p>
+<pre class="hljs"><code><div><span class="hljs-attribute"><span class="hljs-nomarkup">Deny</span></span> from <span class="hljs-literal">all</span>
+<span class="hljs-attribute"><span class="hljs-nomarkup">Allow</span></span> from 192.168.1.100
+</div></code></pre>
+<p>para que <strong>solo la IP <code>192.168.1.100</code></strong> pueda acceder al sitio.</p>
+<p>Si probamos desde la IP bloqueada (<code>192.168.1.135</code>), el acceso será <strong>denegado</strong>, mientras que desde cualquier otra IP sí se podrá entrar:</p>
+<p><img src="imgs/17.png" alt="Acceso denegado desde IP 192.168.1.130"></p>
+<p>Si no nos funciona restringir de esta forma podemos usar la directiva <code>Order</code> para especificar si se aplica antes Allow o Deny:</p>
+<pre class="hljs"><code><div><span class="hljs-section">&lt;VirtualHost *:8080&gt;</span>
+    <span class="hljs-attribute"><span class="hljs-nomarkup">ServerName</span></span> aaron2.local
+    <span class="hljs-attribute">ServerAlias</span> www.aaron2.local
+
+    <span class="hljs-attribute"><span class="hljs-nomarkup">DocumentRoot</span></span> /var/www/aaron2
+
+    <span class="hljs-section">&lt;Directory /var/www/aaron2&gt;</span>
+	<span class="hljs-attribute"><span class="hljs-nomarkup">Order</span></span> allow,deny
+	<span class="hljs-attribute"><span class="hljs-nomarkup">Allow</span></span> from <span class="hljs-literal">all</span>
+        <span class="hljs-attribute"><span class="hljs-nomarkup">Deny</span></span> from 192.168.1.135
+    <span class="hljs-section">&lt;/Directory&gt;</span>
+
+    <span class="hljs-attribute">ErrorLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron2-error.log
+    <span class="hljs-attribute">CustomLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron2-access.log combined
+<span class="hljs-section">&lt;/VirtualHost&gt;</span>
+</div></code></pre>
+<p><code>Order allow,deny</code> --&gt; Primero revisará que equipos pueden entrar y luego restringirá las direcciones IP especificadas.</p>
+<p>También podemos ocultar archivos cuando se lista el directorio con la etiqueta <code>&lt;Files&gt;</code>, para este ejemplo usaremos el sitio del puerto 80 y bloquearemos la visualización de archivos CSS para todos:</p>
+<pre class="hljs"><code><div><span class="hljs-section">&lt;VirtualHost *:80&gt;</span>
+	<span class="hljs-attribute"><span class="hljs-nomarkup">ServerName</span></span> aaron.local
+	<span class="hljs-attribute">ServerAlias</span> www.aaron.local
+
+	<span class="hljs-attribute"><span class="hljs-nomarkup">DocumentRoot</span></span> /var/www/aaron
+
+	<span class="hljs-section">&lt;Directory /var/www/aaron/lib&gt;</span>
+		<span class="hljs-attribute"><span class="hljs-nomarkup">Options</span></span> +Indexes
+		<span class="hljs-section">&lt;Files *.css&gt;</span>
+			<span class="hljs-attribute"><span class="hljs-nomarkup">Deny</span></span> from <span class="hljs-literal">all</span>
+		<span class="hljs-section">&lt;/Files&gt;</span>
+	<span class="hljs-section">&lt;/Directory&gt;</span>
+	
+	<span class="hljs-section">&lt;Directory /var/www/aaron/zona-restringida&gt;</span>
+		<span class="hljs-attribute">AuthType</span> Basic
+		<span class="hljs-attribute">AuthName</span> <span class="hljs-string">"Zona restringida con usuario y contraseña"</span>
+		<span class="hljs-attribute">AuthBasicProvider</span> file
+		<span class="hljs-attribute">AuthUserFile</span> /var/www/aaron/secret
+		<span class="hljs-attribute">AuthGroupFile</span> /var/www/aaron/group
+		<span class="hljs-attribute">Require</span> group autorizados
+	<span class="hljs-section">&lt;/Directory&gt;</span>
+
+	<span class="hljs-attribute">ErrorLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron-error.log
+	<span class="hljs-attribute">CustomLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron-access.log combined
+<span class="hljs-section">&lt;/VirtualHost&gt;</span>
+</div></code></pre>
+<p>Recargamos la configuración y veremos que en el directorio especificado hay un archivo CSS, pero cuando accedemos desde el navegador no vemos ninguno:</p>
+<p><img src="imgs/18.png" alt="Archivos CSS ocultos por las restricciones"></p>
+<p>También funciona con la etiqueta <code>&lt;FilesMatch&gt;</code>:</p>
+<pre class="hljs"><code><div><span class="hljs-section">&lt;VirtualHost *:80&gt;</span>
+        <span class="hljs-attribute"><span class="hljs-nomarkup">ServerName</span></span> aaron.local
+        <span class="hljs-attribute">ServerAlias</span> www.aaron.local
+
+        <span class="hljs-attribute"><span class="hljs-nomarkup">DocumentRoot</span></span> /var/www/aaron
+
+        <span class="hljs-section">&lt;Directory /var/www/aaron/lib&gt;</span>
+                <span class="hljs-attribute"><span class="hljs-nomarkup">Options</span></span> +Indexes
+                <span class="hljs-section">&lt;FilesMatch "\.css$"&gt;</span>
+                        <span class="hljs-attribute">Require</span> <span class="hljs-literal">all</span> denied
+                <span class="hljs-section">&lt;/FilesMatch&gt;</span>
+        <span class="hljs-section">&lt;/Directory&gt;</span>
+
+        <span class="hljs-section">&lt;Directory /var/www/aaron/zona-restringida&gt;</span>
+                <span class="hljs-attribute">AuthType</span> Basic
+                <span class="hljs-attribute">AuthName</span> <span class="hljs-string">"Zona restringida con usuario y contraseña"</span>
+                <span class="hljs-attribute">AuthBasicProvider</span> file
+                <span class="hljs-attribute">AuthUserFile</span> /var/www/aaron/secret
+                <span class="hljs-attribute">AuthGroupFile</span> /var/www/aaron/group
+                <span class="hljs-attribute">Require</span> group autorizados
+        <span class="hljs-section">&lt;/Directory&gt;</span>
+
+        <span class="hljs-attribute">ErrorLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron-error.log
+        <span class="hljs-attribute">CustomLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron-access.log combined
+<span class="hljs-section">&lt;/VirtualHost&gt;</span>
+</div></code></pre>
+<p><strong>Diferencias clave</strong>: <code>&lt;FilesMatch&gt;</code> permite el uso de regex para seleccionar los archivos a permitir o restringir y usa el modo de restricción moderno con <code>Require</code>.</p>
+<p><code>Require all denied</code> --&gt; Restringe el acceso a cualquier equipo. Podemos cambiar all por una IP cualquiera.</p>
+<p><code>Require all granted</code> --&gt; Permite el acceso a cualquier equipo. Podemos cambiar all por una IP cualquiera.</p>
+<p><img src="imgs/19.png" alt="Archivos CSS ocultos por las restricciones"></p>
+<h3 id="%E2%9D%8C-p%C3%A1gina-de-error-personalizada">❌ Página de error personalizada.</h3>
+<p><a id="página-de-error-personalizada"></a></p>
+<p>Para esta sección utilizaremos de ejemplo la página de error creada en el directorio 404 de este repositorio, ahora mismo la tenemos en nuestro equipo:</p>
+<p><img src="imgs/20.png" alt="Página de error 404 personalizada en local. No implementada aún en el sitio."></p>
+<p>Lo primero será pasar los archvios al servidor utilizando el comando <code>scp</code>:</p>
+<pre class="hljs"><code><div>rxn@pop-os:~/Code/rxnwashere_apuntes_apache2$ scp 404/* web@192.168.1.130:/home/web
+web@192.168.1.130<span class="hljs-string">'s password: 
+404.jpg                                                             100%   52KB  44.0MB/s   00:00    
+index.html                                                          100%  425     1.4MB/s   00:00    
+styles.css                                                          100%  281   880.5KB/s   00:00 
+</span></div></code></pre>
+<p>Lo hacemos en la home del usuario del servidor ya que es un directorio con permisos para subir archvios por scp, algunos directorios nos pueden denegar el permiso de subida.</p>
+<p>Ahora movemos los archivos al sitio donde queremos que esté la página de error y modificamos la configuración:</p>
+<pre class="hljs"><code><div>web@ubuntu-web-server:~$ ls
+404.jpg  index.html  styles.css
+web@ubuntu-web-server:~$ sudo mkdir -p /var/www/aaron2/error
+[sudo] password <span class="hljs-keyword">for</span> web: 
+web@ubuntu-web-server:~$ sudo mv * /var/www/aaron2/error/
+web@ubuntu-web-server:~$ ls /var/www/aaron2/error
+404.jpg  index.html  styles.css
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-section">&lt;VirtualHost *:8080&gt;</span>
+    <span class="hljs-attribute"><span class="hljs-nomarkup">ServerName</span></span> aaron2.local
+    <span class="hljs-attribute">ServerAlias</span> www.aaron2.local
+
+    <span class="hljs-attribute"><span class="hljs-nomarkup">DocumentRoot</span></span> /var/www/aaron2
+
+    <span class="hljs-attribute"><span class="hljs-nomarkup">ErrorDocument</span></span> 404 /error/index.html
+
+    <span class="hljs-attribute">ErrorLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron2-error.log
+    <span class="hljs-attribute">CustomLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron2-access.log combined
+<span class="hljs-section">&lt;/VirtualHost&gt;</span>
+</div></code></pre>
+<p>Con la directiva <code>ErrorDocument</code> asignamos un error personalizado al código 404. La ruta del documento de error es relativa a <code>DocumentRoot</code>.</p>
+<p>Como la ruta es relativa, esto afecta al documento HTML, por lo que todos los enlaces deben tener esta ruta, si no los estilos o las imagenes pueden no cargar correctamente:</p>
+<pre class="hljs"><code><div><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width, initial-scale=1.0"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>404 - NOT FOUND<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/error/styles.css"</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">figure</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/error/404.jpg"</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">figure</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"msg"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"code"</span>&gt;</span>404<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"doh"</span>&gt;</span>D'OH!<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+</div></code></pre>
+<p>Recargamos la configuración y probamos nuestra página de error intentando acceder a un sitio inexistente en nuestra web:</p>
+<p><img src="imgs/21.png" alt="Página de error personalizada"></p>
+<h4 id="otras-formas-de-personalizar-el-error">Otras formas de personalizar el error</h4>
+<p><strong>Mediante texto</strong>:</p>
+<pre class="hljs"><code><div><span class="hljs-attribute"><span class="hljs-nomarkup">ErrorDocument</span></span> 404 <span class="hljs-string">"404 D'OH!"</span>
+</div></code></pre>
+<p><strong>Redirección</strong>:</p>
+<pre class="hljs"><code><div><span class="hljs-attribute"><span class="hljs-nomarkup">ErrorDocument</span></span> 404 https://google.es/
+</div></code></pre>
+<h3 id="%F0%9F%94%90-activar-ssl">🔐 Activar SSL</h3>
+<p><a id="activar-ssl"></a></p>
+<p>Activar SSL en nuestro servidor web es indispensable para cifrar la comunicación y no exponer datos de los usuarios a posibles atacantes.</p>
+<p>Para lograr que nuestra página sea segura deberemos hacer lo siguiente:</p>
+<ul>
+<li>Activar el módulo <code>ssl</code></li>
+<li>Generar un <strong>certificado autofirmado</strong>. (Si dispusieramos del dominio comprado podriamos usar Let's Encrypt)</li>
+<li>Configurar los VirtualHost seguros</li>
+<li>Redireccionar los VirtualHost inseguros.</li>
+</ul>
+<h4 id="activaci%C3%B3n-del-m%C3%B3dulo-y-generaci%C3%B3n-de-certificados">Activación del módulo y generación de certificados</h4>
+<pre class="hljs"><code><div>sudo a2enmod ssl
+sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/ssl/private/aaron.key -out /etc/ssl/certs/aaron.pem -days 365
+</div></code></pre>
+<p>Cuando genereis el certificado podeis dejar los datos vacios, para este ejemplo no es necesario.</p>
+<p>Ahora modificamos la configuración del sitio:</p>
+<pre class="hljs"><code><div><span class="hljs-section">&lt;VirtualHost *:80&gt;</span>
+	<span class="hljs-attribute"><span class="hljs-nomarkup">ServerName</span></span> aaron.local
+	<span class="hljs-attribute">ServerAlias</span> www.aaron.local
+
+	<span class="hljs-attribute"><span class="hljs-nomarkup">DocumentRoot</span></span> /var/www/aaron
+
+	<span class="hljs-section">&lt;Directory /var/www/aaron/lib&gt;</span>
+		<span class="hljs-attribute"><span class="hljs-nomarkup">Options</span></span> +Indexes
+		<span class="hljs-section">&lt;FilesMatch "\.css$"&gt;</span>
+			<span class="hljs-attribute">Require</span> <span class="hljs-literal">all</span> denied
+		<span class="hljs-section">&lt;/FilesMatch&gt;</span>
+	<span class="hljs-section">&lt;/Directory&gt;</span>
+	
+	<span class="hljs-section">&lt;Directory /var/www/aaron/zona-restringida&gt;</span>
+		<span class="hljs-attribute">AuthType</span> Basic
+		<span class="hljs-attribute">AuthName</span> <span class="hljs-string">"Zona restringida con usuario y contraseña"</span>
+		<span class="hljs-attribute">AuthBasicProvider</span> file
+		<span class="hljs-attribute">AuthUserFile</span> /var/www/aaron/secret
+		<span class="hljs-attribute">AuthGroupFile</span> /var/www/aaron/group
+		<span class="hljs-attribute">Require</span> group autorizados
+	<span class="hljs-section">&lt;/Directory&gt;</span>
+
+	<span class="hljs-attribute">ErrorLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron-error.log
+	<span class="hljs-attribute">CustomLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron-access.log combined
+<span class="hljs-section">&lt;/VirtualHost&gt;</span>
+
+<span class="hljs-section">&lt;VirtualHost *:8080&gt;</span>
+    <span class="hljs-attribute"><span class="hljs-nomarkup">ServerName</span></span> aaron2.local
+    <span class="hljs-attribute">ServerAlias</span> www.aaron2.local
+
+    <span class="hljs-attribute"><span class="hljs-nomarkup">DocumentRoot</span></span> /var/www/aaron2
+
+    <span class="hljs-attribute"><span class="hljs-nomarkup">ErrorDocument</span></span> 404 /error/index.html
+
+    <span class="hljs-attribute">ErrorLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron2-error.log
+    <span class="hljs-attribute">CustomLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron2-access.log combined
+<span class="hljs-section">&lt;/VirtualHost&gt;</span>
+
+<span class="hljs-section">&lt;IfModule mod_ssl.c&gt;</span>
+	<span class="hljs-section">&lt;VirtualHost *:443&gt;</span>
+		<span class="hljs-attribute"><span class="hljs-nomarkup">ServerName</span></span> aaron.local
+		<span class="hljs-attribute">ServerAlias</span> www.aaron.local
+		
+		<span class="hljs-attribute">SSLEngine</span> <span class="hljs-literal">on</span>
+		<span class="hljs-attribute">SSLCertificateFile</span> <span class="hljs-string">"/etc/ssl/certs/aaron.pem"</span>
+		<span class="hljs-attribute">SSLCertificateKeyFile</span> <span class="hljs-string">"/etc/ssl/private/aaron.key"</span>
+
+		<span class="hljs-attribute"><span class="hljs-nomarkup">DocumentRoot</span></span> /var/www/aaron
+
+		<span class="hljs-section">&lt;Directory /var/www/aaron/lib&gt;</span>
+			<span class="hljs-attribute"><span class="hljs-nomarkup">Options</span></span> +Indexes
+			<span class="hljs-section">&lt;FilesMatch "\.css$"&gt;</span>
+				<span class="hljs-attribute">Require</span> <span class="hljs-literal">all</span> denied
+			<span class="hljs-section">&lt;/FilesMatch&gt;</span>
+		<span class="hljs-section">&lt;/Directory&gt;</span>
+
+		<span class="hljs-section">&lt;Directory /var/www/aaron/zona-restringida&gt;</span>
+			<span class="hljs-attribute">AuthType</span> Basic
+			<span class="hljs-attribute">AuthName</span> <span class="hljs-string">"Zona restringida con usuario y contraseña"</span>
+			<span class="hljs-attribute">AuthBasicProvider</span> file
+			<span class="hljs-attribute">AuthUserFile</span> /var/www/aaron/secret
+			<span class="hljs-attribute">AuthGroupFile</span> /var/www/aaron/group
+			<span class="hljs-attribute">Require</span> group autorizados
+		<span class="hljs-section">&lt;/Directory&gt;</span>
+
+		<span class="hljs-attribute">ErrorLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron-error.log
+		<span class="hljs-attribute">CustomLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron-access.log combined
+	<span class="hljs-section">&lt;/VirtualHost&gt;</span>
+
+	<span class="hljs-section">&lt;VirtualHost *:8443&gt;</span>
+		<span class="hljs-attribute"><span class="hljs-nomarkup">ServerName</span></span> aaron2.local
+		<span class="hljs-attribute">ServerAlias</span> www.aaron2.local
+		
+		<span class="hljs-attribute">SSLEngine</span> <span class="hljs-literal">on</span>
+                <span class="hljs-attribute">SSLCertificateFile</span> <span class="hljs-string">"/etc/ssl/certs/aaron.pem"</span>
+                <span class="hljs-attribute">SSLCertificateKeyFile</span> <span class="hljs-string">"/etc/ssl/private/aaron.key"</span>
+
+		<span class="hljs-attribute"><span class="hljs-nomarkup">DocumentRoot</span></span> /var/www/aaron2
+
+		<span class="hljs-attribute"><span class="hljs-nomarkup">ErrorDocument</span></span> 404 /error/index.html
+
+		<span class="hljs-attribute">ErrorLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron2-error.log
+		<span class="hljs-attribute">CustomLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron2-access.log combined
+
+	<span class="hljs-section">&lt;/VirtualHost&gt;</span>
+<span class="hljs-section">&lt;/IfModule&gt;</span>
+</div></code></pre>
+<p>Los puertos seguros siguen activos, por lo que aún podremos acceder al sitio desde ellos, la diferencia es que ahora el acceso por HTTPS está habilitado una vez recarguemos la configuración:</p>
+<p><img src="imgs/22.png" alt="Advertencia por certificado autofirmado"></p>
+<p>Aceptamos el riesgo y continuamos.</p>
+<p><img src="imgs/23.png" alt="Certificado para https en el puerto 443"></p>
+<p>Con el sitio del puerto 8443 pasará lo mismo:</p>
+<p><img src="imgs/24.png" alt="Certificado para https en el puerto 8443"></p>
+<h4 id="redirecciones">Redirecciones</h4>
+<p>Para garantizar mayor seguridad tenemos que hacer que los portales inseguros redireccionen a los seguros.</p>
+<p>Tenemos dos formas de hacerlo:</p>
+<ul>
+<li><code>Redirect permanent</code></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-attribute">Redirect</span> permanent / https://example.com/
+<span class="hljs-comment"># Redirigir siempre a la misma URL si se accede por un puerto inseguro.</span>
+</div></code></pre>
+<ul>
+<li>Módulo <code>rewrite</code></li>
+</ul>
+<pre class="hljs"><code><div>sudo a2enmod rewrite
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-attribute"><span class="hljs-nomarkup">RewriteEngine</span></span> <span class="hljs-literal">On</span>
+<span class="hljs-attribute"><span class="hljs-nomarkup">RewriteCond</span></span> <span class="hljs-variable">%{HTTPS}</span> <span class="hljs-literal">off</span>
+<span class="hljs-attribute"><span class="hljs-nomarkup">RewriteRule</span></span> (.*) https://<span class="hljs-variable">%{HTTP_HOST}</span><span class="hljs-variable">%{REQUEST_URI}</span>
+</div></code></pre>
+<p>Es más recomendable utilizar <code>rewrite</code>, ya que nos mantendrá la URL pero usará el puerto seguro, en cambio con <code>Redirect permanent</code> estaremos haciendo una redirección fija a un sitio, lo cual es poco práctico.</p>
+<pre class="hljs"><code><div><span class="hljs-section">&lt;VirtualHost *:80&gt;</span>
+	<span class="hljs-attribute"><span class="hljs-nomarkup">ServerName</span></span> aaron.local
+	<span class="hljs-attribute">ServerAlias</span> www.aaron.local
+
+	<span class="hljs-attribute"><span class="hljs-nomarkup">DocumentRoot</span></span> /var/www/aaron
+
+	<span class="hljs-section">&lt;Directory /var/www/aaron/lib&gt;</span>
+		<span class="hljs-attribute"><span class="hljs-nomarkup">Options</span></span> +Indexes
+		<span class="hljs-section">&lt;FilesMatch "\.css$"&gt;</span>
+			<span class="hljs-attribute">Require</span> <span class="hljs-literal">all</span> denied
+		<span class="hljs-section">&lt;/FilesMatch&gt;</span>
+	<span class="hljs-section">&lt;/Directory&gt;</span>
+	
+	<span class="hljs-section">&lt;Directory /var/www/aaron/zona-restringida&gt;</span>
+		<span class="hljs-attribute">AuthType</span> Basic
+		<span class="hljs-attribute">AuthName</span> <span class="hljs-string">"Zona restringida con usuario y contraseña"</span>
+		<span class="hljs-attribute">AuthBasicProvider</span> file
+		<span class="hljs-attribute">AuthUserFile</span> /var/www/aaron/secret
+		<span class="hljs-attribute">AuthGroupFile</span> /var/www/aaron/group
+		<span class="hljs-attribute">Require</span> group autorizados
+	<span class="hljs-section">&lt;/Directory&gt;</span>
+
+	<span class="hljs-attribute"><span class="hljs-nomarkup">RewriteEngine</span></span> <span class="hljs-literal">On</span>
+	<span class="hljs-attribute"><span class="hljs-nomarkup">RewriteCond</span></span> <span class="hljs-variable">%{HTTPS}</span> <span class="hljs-literal">off</span>
+	<span class="hljs-attribute"><span class="hljs-nomarkup">RewriteRule</span></span> (.*) https://<span class="hljs-variable">%{HTTP_HOST}</span><span class="hljs-variable">%{REQUEST_URI}</span>
+
+	<span class="hljs-attribute">ErrorLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron-error.log
+	<span class="hljs-attribute">CustomLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron-access.log combined
+<span class="hljs-section">&lt;/VirtualHost&gt;</span>
+
+<span class="hljs-section">&lt;VirtualHost *:8080&gt;</span>
+    <span class="hljs-attribute"><span class="hljs-nomarkup">ServerName</span></span> aaron2.local
+    <span class="hljs-attribute">ServerAlias</span> www.aaron2.local
+
+    <span class="hljs-attribute"><span class="hljs-nomarkup">DocumentRoot</span></span> /var/www/aaron2
+
+    <span class="hljs-attribute"><span class="hljs-nomarkup">ErrorDocument</span></span> 404 /error/index.html
+
+    <span class="hljs-attribute"><span class="hljs-nomarkup">RewriteEngine</span></span> <span class="hljs-literal">On</span>
+    <span class="hljs-attribute"><span class="hljs-nomarkup">RewriteCond</span></span> <span class="hljs-variable">%{HTTPS}</span> <span class="hljs-literal">off</span>
+    <span class="hljs-attribute"><span class="hljs-nomarkup">RewriteRule</span></span> (.*) https://<span class="hljs-variable">%{HTTP_HOST}</span><span class="hljs-variable">%{REQUEST_URI}</span>
+
+    <span class="hljs-attribute">ErrorLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron2-error.log
+    <span class="hljs-attribute">CustomLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron2-access.log combined
+<span class="hljs-section">&lt;/VirtualHost&gt;</span>
+
+<span class="hljs-section">&lt;IfModule mod_ssl.c&gt;</span>
+	<span class="hljs-section">&lt;VirtualHost *:443&gt;</span>
+		<span class="hljs-attribute"><span class="hljs-nomarkup">ServerName</span></span> aaron.local
+		<span class="hljs-attribute">ServerAlias</span> www.aaron.local
+		
+		<span class="hljs-attribute">SSLEngine</span> <span class="hljs-literal">on</span>
+		<span class="hljs-attribute">SSLCertificateFile</span> <span class="hljs-string">"/etc/ssl/certs/aaron.pem"</span>
+		<span class="hljs-attribute">SSLCertificateKeyFile</span> <span class="hljs-string">"/etc/ssl/private/aaron.key"</span>
+
+		<span class="hljs-attribute"><span class="hljs-nomarkup">DocumentRoot</span></span> /var/www/aaron
+
+		<span class="hljs-section">&lt;Directory /var/www/aaron/lib&gt;</span>
+			<span class="hljs-attribute"><span class="hljs-nomarkup">Options</span></span> +Indexes
+			<span class="hljs-section">&lt;FilesMatch "\.css$"&gt;</span>
+				<span class="hljs-attribute">Require</span> <span class="hljs-literal">all</span> denied
+			<span class="hljs-section">&lt;/FilesMatch&gt;</span>
+		<span class="hljs-section">&lt;/Directory&gt;</span>
+
+		<span class="hljs-section">&lt;Directory /var/www/aaron/zona-restringida&gt;</span>
+			<span class="hljs-attribute">AuthType</span> Basic
+			<span class="hljs-attribute">AuthName</span> <span class="hljs-string">"Zona restringida con usuario y contraseña"</span>
+			<span class="hljs-attribute">AuthBasicProvider</span> file
+			<span class="hljs-attribute">AuthUserFile</span> /var/www/aaron/secret
+			<span class="hljs-attribute">AuthGroupFile</span> /var/www/aaron/group
+			<span class="hljs-attribute">Require</span> group autorizados
+		<span class="hljs-section">&lt;/Directory&gt;</span>
+
+		<span class="hljs-attribute">ErrorLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron-error.log
+		<span class="hljs-attribute">CustomLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron-access.log combined
+	<span class="hljs-section">&lt;/VirtualHost&gt;</span>
+
+	<span class="hljs-section">&lt;VirtualHost *:8443&gt;</span>
+		<span class="hljs-attribute"><span class="hljs-nomarkup">ServerName</span></span> aaron2.local
+		<span class="hljs-attribute">ServerAlias</span> www.aaron2.local
+		
+		<span class="hljs-attribute">SSLEngine</span> <span class="hljs-literal">on</span>
+                <span class="hljs-attribute">SSLCertificateFile</span> <span class="hljs-string">"/etc/ssl/certs/aaron.pem"</span>
+                <span class="hljs-attribute">SSLCertificateKeyFile</span> <span class="hljs-string">"/etc/ssl/private/aaron.key"</span>
+
+		<span class="hljs-attribute"><span class="hljs-nomarkup">DocumentRoot</span></span> /var/www/aaron2
+
+		<span class="hljs-attribute"><span class="hljs-nomarkup">ErrorDocument</span></span> 404 /error/index.html
+
+		<span class="hljs-attribute">ErrorLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron2-error.log
+		<span class="hljs-attribute">CustomLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/aaron2-access.log combined
+
+	<span class="hljs-section">&lt;/VirtualHost&gt;</span>
+<span class="hljs-section">&lt;/IfModule&gt;</span>
+</div></code></pre>
+<p>Ahora ya tenemos nuestro sitio totalmente seguro.</p>
+<h2 id="%F0%9F%93%9A-recursos-recomendados">📚 Recursos recomendados</h2>
+<p><a id="-recursos-recomendados"></a></p>
+<ul>
+<li><a href="https://httpd.apache.org/docs/2.4/">Documentación oficial de Apache HTTP Server</a></li>
+<li><a href="https://httpd.apache.org/docs/2.4/vhosts/">Manual de VirtualHosts de Apache</a></li>
+<li><a href="https://httpd.apache.org/docs/2.4/howto/access.html">Directivas de acceso (Allow, Deny y Require)</a></li>
+<li><a href="https://netplan.io/">Netplan Documentation (oficial, Ubuntu)</a></li>
+<li><a href="https://www.cyberciti.biz/faq/setting-up-an-network-interfaces-file/">Guía de interfaces en Debian y derivados (cyberciti)</a></li>
+<li><a href="https://www.cyberciti.biz/faq/apache-2-web-server-security-hardening-tips/">Hardening Tips de Seguridad para Apache2</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-create-a-ssl-certificate-on-apache-for-ubuntu-18-04-es">Cómo configurar SSL en Apache (DigitalOcean)</a></li>
+<li><a href="https://letsencrypt.org/es/">Let's Encrypt (certificados SSL gratuitos)</a></li>
+<li><a href="https://httpd.apache.org/docs/current/mod/core.html#errordocument">Referencia oficial de ErrorDocument</a></li>
+<li><a href="https://rogerdocs.cat/serveis/web/apache/">RogerDocs</a></li>
+</ul>
+<hr>
+<p><code>Hecho por Aarón Cano (<a href="https://github.com/rxnwashere">rxnwashere</a>)</code></p>
+
+</body>
+</html>
