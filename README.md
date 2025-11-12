@@ -802,8 +802,259 @@ ErrorDocument 404 "404 D'OH!"
 ErrorDocument 404 https://google.es/
 ```
 
-### Securizar el sitio (Activar SSL)
+### Activar SSL
+
+Activar SSL en nuestro servidor web es indispensable para cifrar la comunicación y no exponer datos de los usuarios a posibles atacantes.
+
+Para lograr que nuestra página sea segura deberemos hacer lo siguiente:
+
+- Activar el módulo <code>ssl</code>
+- Generar un **certificado autofirmado**. (Si dispusieramos del dominio comprado podriamos usar Let's Encrypt)
+- Configurar los VirtualHost seguros
+- Redireccionar los VirtualHost inseguros.
 
 #### Activación del módulo y generación de certificados
 
+```bash
+sudo a2enmod ssl
+sudo openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/ssl/private/aaron.key -out /etc/ssl/certs/aaron.pem -days 365
+```
+
+Cuando genereis el certificado podeis dejar los datos vacios, para este ejemplo no es necesario.
+
+Ahora modificamos la configuración del sitio:
+
+```apache
+<VirtualHost *:80>
+	ServerName aaron.local
+	ServerAlias www.aaron.local
+
+	DocumentRoot /var/www/aaron
+
+	<Directory /var/www/aaron/lib>
+		Options +Indexes
+		<FilesMatch "\.css$">
+			Require all denied
+		</FilesMatch>
+	</Directory>
+	
+	<Directory /var/www/aaron/zona-restringida>
+		AuthType Basic
+		AuthName "Zona restringida con usuario y contraseña"
+		AuthBasicProvider file
+		AuthUserFile /var/www/aaron/secret
+		AuthGroupFile /var/www/aaron/group
+		Require group autorizados
+	</Directory>
+
+	ErrorLog ${APACHE_LOG_DIR}/aaron-error.log
+	CustomLog ${APACHE_LOG_DIR}/aaron-access.log combined
+</VirtualHost>
+
+<VirtualHost *:8080>
+    ServerName aaron2.local
+    ServerAlias www.aaron2.local
+
+    DocumentRoot /var/www/aaron2
+
+    ErrorDocument 404 /error/index.html
+
+    ErrorLog ${APACHE_LOG_DIR}/aaron2-error.log
+    CustomLog ${APACHE_LOG_DIR}/aaron2-access.log combined
+</VirtualHost>
+
+<IfModule mod_ssl.c>
+	<VirtualHost *:443>
+		ServerName aaron.local
+		ServerAlias www.aaron.local
+		
+		SSLEngine on
+		SSLCertificateFile "/etc/ssl/certs/aaron.pem"
+		SSLCertificateKeyFile "/etc/ssl/private/aaron.key"
+
+		DocumentRoot /var/www/aaron
+
+		<Directory /var/www/aaron/lib>
+			Options +Indexes
+			<FilesMatch "\.css$">
+				Require all denied
+			</FilesMatch>
+		</Directory>
+
+		<Directory /var/www/aaron/zona-restringida>
+			AuthType Basic
+			AuthName "Zona restringida con usuario y contraseña"
+			AuthBasicProvider file
+			AuthUserFile /var/www/aaron/secret
+			AuthGroupFile /var/www/aaron/group
+			Require group autorizados
+		</Directory>
+
+		ErrorLog ${APACHE_LOG_DIR}/aaron-error.log
+		CustomLog ${APACHE_LOG_DIR}/aaron-access.log combined
+	</VirtualHost>
+
+	<VirtualHost *:8443>
+		ServerName aaron2.local
+		ServerAlias www.aaron2.local
+		
+		SSLEngine on
+                SSLCertificateFile "/etc/ssl/certs/aaron.pem"
+                SSLCertificateKeyFile "/etc/ssl/private/aaron.key"
+
+		DocumentRoot /var/www/aaron2
+
+		ErrorDocument 404 /error/index.html
+
+		ErrorLog ${APACHE_LOG_DIR}/aaron2-error.log
+		CustomLog ${APACHE_LOG_DIR}/aaron2-access.log combined
+
+	</VirtualHost>
+</IfModule>
+```
+
+Los puertos seguros siguen activos, por lo que aún podremos acceder al sitio desde ellos, la diferencia es que ahora el acceso por HTTPS está habilitado una vez recarguemos la configuración:
+
+![Advertencia por certificado autofirmado](imgs/22.png)
+
+Aceptamos el riesgo y continuamos.
+
+![Certificado para https en el puerto 443](imgs/23.png)
+
+Con el sitio del puerto 8443 pasará lo mismo:
+
+![Certificado para https en el puerto 8443](imgs/24.png)
+
 #### Redirecciones
+
+Para garantizar mayor seguridad tenemos que hacer que los portales inseguros redireccionen a los seguros.
+
+Tenemos dos formas de hacerlo:
+
+- <code>Redirect permanent</code>
+
+```apache
+Redirect permanent / https://example.com/
+# Redirigir siempre a la misma URL si se accede por un puerto inseguro.
+```
+
+- Módulo <code>rewrite</code>
+
+```bash
+sudo a2enmod rewrite
+```
+
+```apache
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+```
+
+Es más recomendable utilizar <code>rewrite</code>, ya que nos mantendrá la URL pero usará el puerto seguro, en cambio con <code>Redirect permanent</code> estaremos haciendo una redirección fija a un sitio, lo cual es poco práctico.
+
+```apache
+<VirtualHost *:80>
+	ServerName aaron.local
+	ServerAlias www.aaron.local
+
+	DocumentRoot /var/www/aaron
+
+	<Directory /var/www/aaron/lib>
+		Options +Indexes
+		<FilesMatch "\.css$">
+			Require all denied
+		</FilesMatch>
+	</Directory>
+	
+	<Directory /var/www/aaron/zona-restringida>
+		AuthType Basic
+		AuthName "Zona restringida con usuario y contraseña"
+		AuthBasicProvider file
+		AuthUserFile /var/www/aaron/secret
+		AuthGroupFile /var/www/aaron/group
+		Require group autorizados
+	</Directory>
+
+	RewriteEngine On
+	RewriteCond %{HTTPS} off
+	RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+	ErrorLog ${APACHE_LOG_DIR}/aaron-error.log
+	CustomLog ${APACHE_LOG_DIR}/aaron-access.log combined
+</VirtualHost>
+
+<VirtualHost *:8080>
+    ServerName aaron2.local
+    ServerAlias www.aaron2.local
+
+    DocumentRoot /var/www/aaron2
+
+    ErrorDocument 404 /error/index.html
+
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+    ErrorLog ${APACHE_LOG_DIR}/aaron2-error.log
+    CustomLog ${APACHE_LOG_DIR}/aaron2-access.log combined
+</VirtualHost>
+
+<IfModule mod_ssl.c>
+	<VirtualHost *:443>
+		ServerName aaron.local
+		ServerAlias www.aaron.local
+		
+		SSLEngine on
+		SSLCertificateFile "/etc/ssl/certs/aaron.pem"
+		SSLCertificateKeyFile "/etc/ssl/private/aaron.key"
+
+		DocumentRoot /var/www/aaron
+
+		<Directory /var/www/aaron/lib>
+			Options +Indexes
+			<FilesMatch "\.css$">
+				Require all denied
+			</FilesMatch>
+		</Directory>
+
+		<Directory /var/www/aaron/zona-restringida>
+			AuthType Basic
+			AuthName "Zona restringida con usuario y contraseña"
+			AuthBasicProvider file
+			AuthUserFile /var/www/aaron/secret
+			AuthGroupFile /var/www/aaron/group
+			Require group autorizados
+		</Directory>
+
+		ErrorLog ${APACHE_LOG_DIR}/aaron-error.log
+		CustomLog ${APACHE_LOG_DIR}/aaron-access.log combined
+	</VirtualHost>
+
+	<VirtualHost *:8443>
+		ServerName aaron2.local
+		ServerAlias www.aaron2.local
+		
+		SSLEngine on
+                SSLCertificateFile "/etc/ssl/certs/aaron.pem"
+                SSLCertificateKeyFile "/etc/ssl/private/aaron.key"
+
+		DocumentRoot /var/www/aaron2
+
+		ErrorDocument 404 /error/index.html
+
+		ErrorLog ${APACHE_LOG_DIR}/aaron2-error.log
+		CustomLog ${APACHE_LOG_DIR}/aaron2-access.log combined
+
+	</VirtualHost>
+</IfModule>
+```
+
+Ahora ya tenemos nuestro sitio totalmente seguro.
+
+## 📚 Recursos recomendados
+
+
+
+<br>
+
+<code>Hecho por Aarón Cano ([rxnwashere](https://github.com/rxnwashere)) y revisado con ChatGPT</code>
