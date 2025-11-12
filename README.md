@@ -1,26 +1,49 @@
 # Apuntes Apache2
 
-## ¿Qué es Apache2?
+## 📑 Contenidos
+
+1. [🔎 ¿Qué es Apache2?](#que-es-apache2)
+2. [🌐 Protocolos HTTP y HTTPS](#protocolos-http-y-https)
+3. [👤 Usuario](#usuario)
+4. [💻 Conexión remota con el servidor](#conexión-remota-con-el-servidor)
+5. [🛠️ Instalación](#instalación)
+6. [⚙️ Configuraciones](#configuraciones)
+   - [📝 Archivo /etc/apache2/ports.conf](#archivo-etcapache2portsconf)
+   - [🏠 Configuración inicial del sitio](#configuración-inicial-del-sitio)
+   - [📒 Archivo /etc/hosts](#archivo-etchosts)
+   - [🔍 Prueba de configuración inicial](#prueba-de-configuración-inicial)
+7. [🔒 Configurar acceso restringido](#configuración-de-restricciones)
+   - [🙎‍♂️ Acceso restringido por usuarios](#acceso-restringido-por-usuarios)
+   - [👥 Acceso restringido por grupos](#acceso-restringido-por-grupos)
+   - [🚫 Allow y Deny - Restricción por IP](#allow-y-deny)
+8. [❌ Página de error personalizada](#página-de-error-personalizada)
+9. [🔐 Activar SSL](#activar-ssl)
+10. [📚 Recursos recomendados](#-recursos-recomendados)
+
+## 🔎 ¿Qué es Apache2?
+<a id="que-es-apache2"></a>
 **Apache2** es un **servidor web** muy utilizado en sistemas Linux.
 Su función principal es servir páginas web a través de los protocolos **HTTP y HTTPS**.
 
-### Protocolos HTTP y HTTPS
-
+## 🌐 Protocolos HTTP y HTTPS
+<a id="protocolos-http-y-https"></a>
 Siglas de **HyperText Transfer Protocol**, transfiere principalmente documentos HTML y multimedia.
 **HTTPS** es la **versión segura** de HTTP.
 
-#### Puertos
+### Puertos
 
 ```
 HTTP --> Puerto 80
 HTTPS --> Puerto 443
 ```
 
-### Usuario
+## 👤 Usuario
+<a id="usuario"></a>
 
 Apache2 utiliza el usuario <code>www-data</code>.
 
-## Conexión remota con el servidor
+## 💻 Conexión remota con el servidor
+<a id="conexión-remota-con-el-servidor"></a>
 
 Para trabajar de forma más comoda con nuestro servidor podemos usar ssh para conectarnos desde nuestro terminal de forma remota al servidor:
 
@@ -32,7 +55,8 @@ ssh web@192.168.1.130
 
 Nos pedirá añadir el fingerprint y la contraseña del usuario remoto.
 
-## Instalación
+## 🛠️ Instalación
+<a id="instalación"></a>
 
 Para la instalación de Apache2 es recomendable que nuestro servidor disponga de una **IP fija**, podemos configurarla desde el archivo **Netplan**:
 
@@ -137,9 +161,11 @@ Ahora si accedemos a la ip del servidor desde el navegador veremos la página po
 
 ![Página por defecto de Apache](imgs/01.png)
 
-## Configuraciones
+## ⚙️ Configuraciones
+<a id="configuraciones"></a>
 
-### Archivo /etc/apache2/ports.conf
+### 📝 Archivo /etc/apache2/ports.conf
+<a id="archivo-etcapache2portsconf"></a>
 
 ```apache
 # If you just change the port or add more ports here, you will likely also
@@ -232,7 +258,14 @@ tcp   LISTEN  0       511                  *:8080               *:*
 
 Ahora ya aparecen los puertos seguros para HTTPS.
 
-### Configuración inicial del sitio
+Si quiseramos desactivar el módulo deberiamos utilizar el siguiente comando:
+
+```bash
+sudo a2dismod ssl
+```
+
+### 🏠 Configuración inicial del sitio
+<a id="configuración-inicial-del-sitio"></a>
 
 **Directorios importantes:**
 
@@ -333,7 +366,8 @@ To activate the new configuration, you need to run:
 web@ubuntu-web-server:/etc/apache2$ sudo systemctl reload apache2
 ```
 
-### Archivo /etc/hosts
+### 📒 Archivo /etc/hosts
+<a id="archivo-etchosts"></a>
 
 Como no disponemos de servidor DNS ni tenemos nuestro sitio en un hosting externo utilizaremos el archivo /etc/hosts en nuestra máquina y en el servidor para reconocer <code>ServerName</code> y <code>ServerAlias</code>.
 
@@ -368,7 +402,8 @@ ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
 ```
 
-### Prueba de configuración inicial
+### 🔍 Prueba de configuración inicial
+<a id="prueba-de-configuración-inicial"></a>
 
 Ahora si intentamos acceder al sitio desde los nombres especificados y sus puertos veremos que funciona correctamente:
 
@@ -410,11 +445,13 @@ Sin recargar la configuración, si ahora accedemos a la página del puerto 80 ve
 
 ![Estilos aplicados aún teniendo restricción de listar el directorio](imgs/08.png)
 
-### Configurar acceso restringido
+### 🔒 Configurar acceso restringido
+<a id="configuración-de-restricciones"></a>
 
 Es posible configurar restricciones en nuestro servidor web a diferentes niveles como por ejemplo, por usuarios, grupos o direcciones IP...
 
-#### Acceso restringido por usuarios
+#### 🙎‍♂️ Acceso restringido por usuarios
+<a id="acceso-restringido-por-usuarios"></a>
 
 Usando la etiqueta <code>Directory</code> en la configuración de nuestro sitio y el comando <code>htpasswd</code> podemos crear una restricción por usuarios, cuando se intente acceder al sitio restringido se pedirá un usuario y contraseña:
 
@@ -499,7 +536,8 @@ Probaremos con un usuario inexistente, pero no aceptará tampoco si se falla la 
 
 El alert del navegador seguirá apareciendo hasta que se introduzcan credenciales válidos, si cancelamos saltará **Error 401 Unauthorized**.
 
-#### Acceso restringido por grupos
+#### 👥 Acceso restringido por grupos
+<a id="acceso-restringido-por-grupos"></a>
 
 Con los usuarios creados podemos crear grupos y restringir el acceso a los usuarios que no pertenezcan a un grupo especifico.
 
@@ -574,7 +612,8 @@ Aquí tienes la versión **corregida y explicada correctamente**, lista para tus
 
 ---
 
-### Allow y Deny
+### 🚫 Allow y Deny - Restricción por IP
+<a id="allow-y-deny"></a>
 
 Las directivas **Allow** y **Deny** sirven para **restringir el acceso por dirección IP**.
 A diferencia de la autenticación por usuarios o contraseñas, este método controla **desde qué equipos se puede acceder al sitio**.
@@ -712,7 +751,8 @@ También funciona con la etiqueta <code>&lt;FilesMatch&gt;</code>:
 
 ![Archivos CSS ocultos por las restricciones](imgs/19.png)
 
-### Página de error personalizada.
+### ❌ Página de error personalizada.
+<a id="página-de-error-personalizada"></a>
 
 Para esta sección utilizaremos de ejemplo la página de error creada en el directorio 404 de este repositorio, ahora mismo la tenemos en nuestro equipo:
 
@@ -802,7 +842,8 @@ ErrorDocument 404 "404 D'OH!"
 ErrorDocument 404 https://google.es/
 ```
 
-### Activar SSL
+### 🔐 Activar SSL
+<a id="activar-ssl"></a>
 
 Activar SSL en nuestro servidor web es indispensable para cifrar la comunicación y no exponer datos de los usuarios a posibles atacantes.
 
@@ -1052,9 +1093,18 @@ Es más recomendable utilizar <code>rewrite</code>, ya que nos mantendrá la URL
 Ahora ya tenemos nuestro sitio totalmente seguro.
 
 ## 📚 Recursos recomendados
+<a id="-recursos-recomendados"></a>
 
+- [Documentación oficial de Apache HTTP Server](https://httpd.apache.org/docs/2.4/)
+- [Manual de VirtualHosts de Apache](https://httpd.apache.org/docs/2.4/vhosts/)
+- [Directivas de acceso (Allow, Deny y Require)](https://httpd.apache.org/docs/2.4/howto/access.html)
+- [Netplan Documentation (oficial, Ubuntu)](https://netplan.io/)
+- [Guía de interfaces en Debian y derivados (cyberciti)](https://www.cyberciti.biz/faq/setting-up-an-network-interfaces-file/)
+- [Hardening Tips de Seguridad para Apache2](https://www.cyberciti.biz/faq/apache-2-web-server-security-hardening-tips/)  
+- [Cómo configurar SSL en Apache (DigitalOcean)](https://www.digitalocean.com/community/tutorials/how-to-create-a-ssl-certificate-on-apache-for-ubuntu-18-04-es)
+- [Let's Encrypt (certificados SSL gratuitos)](https://letsencrypt.org/es/)
+- [Referencia oficial de ErrorDocument](https://httpd.apache.org/docs/current/mod/core.html#errordocument)
+- [RogerDocs](https://rogerdocs.cat/serveis/web/apache/)
+---
 
-
-<br>
-
-<code>Hecho por Aarón Cano ([rxnwashere](https://github.com/rxnwashere)) y revisado con ChatGPT</code>
+<code>Hecho por Aarón Cano ([rxnwashere](https://github.com/rxnwashere))</code>
